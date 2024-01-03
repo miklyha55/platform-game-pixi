@@ -3,9 +3,9 @@ import { sound } from "@pixi/sound";
 
 import { fontAssets, soundAssets, textureAssets, jsonsAssets } from "./index";
 
-export const fonts = {};
-export const textures = {};
-export const jsons = {};
+export const fonts: any = {};
+export const textures: any = {};
+export const jsons: any = {};
 
 export function load() {
   return new Promise<void>(async (resolve) => {
@@ -40,7 +40,7 @@ export function load() {
     return resolve();
   });
 
-  async function loadTree(writenObject, readenObject, key) {
+  async function loadTree(writenObject: any, readenObject: any, key: string) {
     writenObject[key] = {};
 
     for (const key2 in readenObject[key]) {

@@ -6,7 +6,7 @@ const {
   CleanWebpackPlugin: CleanWebpackPlugin,
 } = require("clean-webpack-plugin");
 
-entryPoint = path.resolve(__dirname, "../src/index.ts");
+entryPoint = path.resolve(__dirname, "./script.js");
 
 module.exports = {
   entry: entryPoint,

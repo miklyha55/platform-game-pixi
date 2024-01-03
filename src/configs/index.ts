@@ -1,4 +1,5 @@
-import bg from "../assets/images/game/bg.png";
+import bg1 from "../assets/images/game/bg_1.png";
+import bg2 from "../assets/images/game/bg_2.png";
 
 import cat1 from "../assets/images/game/cat/cat_1.png";
 import cat2 from "../assets/images/game/cat/cat_2.png";
@@ -11,7 +12,8 @@ import coin from "../assets/images/ui/coin.png";
 import life from "../assets/images/ui/life.png";
 
 export const textureAssets = {
-  bg,
+  bg1,
+  bg2,
   cat: {
     cat1,
     cat2,

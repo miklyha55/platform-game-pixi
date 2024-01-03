@@ -1,8 +1,9 @@
-import { Container, Point } from "pixi.js";
+import { Container } from "pixi.js";
 import { IROContext } from "../../types";
 import GameEvents from "../../constants/events/GameEvents";
 import GameObjectManager from "../../managers/gameObjectsManager/GameObjectManager";
 import RenderManager from "../../managers/renderManager/RenderManager";
+import Point from "../../configs/Point";
 
 export default class BaseScene extends Container {
   context: IROContext;

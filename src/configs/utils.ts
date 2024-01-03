@@ -1,5 +1,5 @@
-import { Point } from "pixi.js";
 import { IVev2, IRectangle } from "../types";
+import Point from "./Point";
 
 export const Utils = {
   add: (vec1: IVev2, vec2: IVev2) => {
