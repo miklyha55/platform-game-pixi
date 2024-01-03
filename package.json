@@ -1,0 +1,38 @@
+{
+  "name": "Platform game Pixi",
+  "main": "index.ts",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --mode production --config webpack/webpack.config.js",
+    "start": "cross-env NODE_ENV=development webpack serve --mode development --config webpack/webpack.config.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "@pixi/filter-glow": "^5.2.1",
+    "@pixi/math-extras": "^7.3.2",
+    "@pixi/particle-emitter": "^5.0.8",
+    "@pixi/sound": "^5.2.1",
+    "@pixi/ui": "^0.6.2",
+    "babel-loader": "^8.2.5",
+    "base64-inline-loader": "^2.0.1",
+    "clean-webpack-plugin": "^4.0.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.8.1",
+    "fontfaceobserver": "^2.3.0",
+    "html-webpack-plugin": "^5.5.0",
+    "pixi.js": "^7.2.0",
+    "pug": "^3.0.2",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.5.1",
+    "tweedle.js": "^2.0.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.74.0",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-dev-server": "^4.10.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.2.1",
+    "url-loader": "^4.1.1",
+    "webpack-cli": "^4.10.0"
+  }
+}
