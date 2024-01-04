@@ -30,8 +30,8 @@ export default class GameObjectStorage {
     removedGameObjects.forEach((removedGameObject) => {
       this.gameObjects.forEach((gameObject, index) => {
         if (gameObject === removedGameObject) {
-          gameObject.destroy();
           this.gameObjects.splice(index, 1);
+          gameObject.remove();
         }
       });
     });

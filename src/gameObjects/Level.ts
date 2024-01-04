@@ -1,25 +1,45 @@
-import GameObject from "../managers/gameObjectsManager/GameObject";
-import { IROContextCfg } from "../types";
-import RenderGameTypes from "../constants/events/RenderGameTypes";
+import GameEvents from "../constants/events/GameEvents";
+import PlaceManager from "../managers/placeManager/PlaceManager";
+import GameObjectManager from "../managers/gameObjectsManager/GameObjectManager";
 import Bg from "./Bg";
 import Character from "./character/Character";
+import Ai from "./character/Ai";
+import { IROContextCfg } from "../types";
 
-export default class Level extends GameObject {
+export default class Level {
   bg: Bg;
   character: Character;
-  
-  constructor(context: IROContextCfg) {
-    super(context);
+  ai: Ai;
+  placeManager: PlaceManager;
+  context: IROContextCfg;
+  gameObjectManager: GameObjectManager;
 
-    this.renderLayer = RenderGameTypes.Game;
+  constructor(context: IROContextCfg, gameObjectManager: GameObjectManager) {
+    this.context = context;
+    this.gameObjectManager = gameObjectManager;
   }
 
-  onCreate() {
-    this.bg = this.gameObjectManager.create(new Bg(this.context), this) as Bg;
-    this.character = this.gameObjectManager.create(new Character(this.context), this) as Character;
+  create() {
+    this.bg = this.gameObjectManager.create(new Bg(this.context)) as Bg;
+    this.character = this.gameObjectManager.create(
+      new Character(this.context)
+    ) as Character;
+    this.ai = this.gameObjectManager.create(new Ai(this.context, this.character)) as Ai;
+    this.placeManager = new PlaceManager(this.context, this.gameObjectManager);
+    this.context.app.stage.on(GameEvents.START_GAME, this.onStartGame, this);
   }
 
-  onRemove() {
-    this.bg.remove();
+  remove() {
+    this.context.app.stage.off(GameEvents.START_GAME, this.onStartGame, this);
+    this.context.app.stage.emit(GameEvents.CLEAR_GAME_OBJECT, [
+      this.bg,
+      this.character,
+      this.ai,
+    ]);
+    this.placeManager.remove();
+  }
+
+  onStartGame() {
+    this.placeManager.onSpawnPlaceObject();
   }
 }

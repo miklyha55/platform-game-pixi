@@ -46,10 +46,6 @@ export default class GameObjectManager {
   }
 
   removeAll() {
-    this.gameObjects.forEach((gameObject) => {
-      gameObject.remove();
-    });
-
     this.context.app.stage.emit(GameEvents.CLEAR_GAME_OBJECT, [
       ...this.gameObjects,
     ]);

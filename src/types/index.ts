@@ -36,8 +36,17 @@ export interface IROJsonCfg {
       readonly direction: number;
       readonly layers: string[];
     };
-    readonly blocks: {};
+    readonly blocks: {
+      readonly spawnDistance: number;
+      readonly countBlocksOnScreen: number;
+      readonly spawnPositionsY: number[];
+    };
     readonly character: {
+      readonly speed: IVev2;
+      readonly jumpVelocity: IVev2;
+      readonly animations: string[][];
+    };
+    readonly ai: {
       readonly speed: IVev2;
       readonly jumpVelocity: IVev2;
       readonly animations: string[][];

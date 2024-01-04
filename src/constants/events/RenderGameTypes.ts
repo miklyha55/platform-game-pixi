@@ -1,5 +1,7 @@
 const Constants = {
-  Game: "Game",
+  Bg: "Bg",
+  Blocks: "Blocks",
+  Character: "Character",
 };
 
 export type RenderGameTypesCfg = {[key in keyof typeof Constants]: string };

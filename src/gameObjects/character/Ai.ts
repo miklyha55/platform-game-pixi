@@ -9,15 +9,15 @@ import RenderGameTypes from "../../constants/events/RenderGameTypes";
 import GameObject from "../../managers/gameObjectsManager/GameObject";
 import PlaceObject from "../../managers/placeManager/PlaceObject";
 import { Animation } from "../../components/animation/Animation";
+import Character from "./Character";
 import { IROContextCfg, IVev2 } from "../../types";
 
-export default class Character extends GameObject {
+export default class Ai extends GameObject {
   sprite: AnimatedSprite;
   animations: Texture[][];
   placeObjects: PlaceObject[];
+  character: Character;
   animationComponent: Animation;
-
-  levelCounter: number;
 
   terminalVelocity: IVev2;
   jumpVelocity: IVev2;
@@ -25,23 +25,28 @@ export default class Character extends GameObject {
   velocity: IVev2;
   gravity: IVev2;
 
+  direction: number;
+  deltaCloser: number;
+
   isInvulnerability: boolean;
   isFirstTap: boolean;
   isJump: boolean;
   isRemove: boolean;
 
-  constructor(context: IROContextCfg) {
+  constructor(context: IROContextCfg, character: Character) {
     super(context);
 
+    this.character = character;
+
+    this.jumpVelocity = this.context.jsons.game.ai.jumpVelocity;
+    this.speed = this.context.jsons.game.ai.speed;
+
     this.terminalVelocity = { x: 0, y: 50 };
-
-    this.jumpVelocity = this.context.jsons.game.character.jumpVelocity;
-    this.speed = this.context.jsons.game.character.speed;
-
     this.velocity = { x: 0, y: 0 };
     this.gravity = { x: 0, y: 9.5 };
 
-    this.levelCounter = 3;
+    this.direction = 1;
+    this.deltaCloser = 0.2;
 
     this.isInvulnerability = false;
     this.isFirstTap = false;
@@ -65,7 +70,9 @@ export default class Character extends GameObject {
     this.renderLayer = RenderGameTypes.Character;
 
     this.scale = new Point(6, 6);
-    this.position = new Point(0, -50);
+    this.position = new Point(-500, -150);
+
+    new Tween(this).to({ x: -200 }, 300).start();
   }
 
   fillAnimations() {
@@ -73,7 +80,7 @@ export default class Character extends GameObject {
       return;
     }
 
-    this.context.jsons.game.character.animations.forEach((frames) => {
+    this.context.jsons.game.ai.animations.forEach((frames) => {
       this.animations.push(
         frames.map((frame) => {
           return textures.cat[frame];
@@ -88,22 +95,9 @@ export default class Character extends GameObject {
     });
   }
 
-  setInvulnerability() {
-    this.isInvulnerability = true;
-
-    new Tween(this)
-      .to({ alpha: 0 }, 50)
-      .onComplete(() => {
-        this.isInvulnerability = false;
-        this.alpha = 1;
-      })
-      .repeat(15)
-      .yoyo()
-      .start();
-  }
-
   checkCollision() {
-    const radius: number = 70;
+    const radius: number = 100;
+    const radiusCharacter: number = 70;
 
     this.placeObjects.forEach((placeObject) => {
       if (this.isRemove) {
@@ -115,19 +109,24 @@ export default class Character extends GameObject {
         placeObject.position.x,
         placeObject.position.y
       );
+      const vec3: IVev2 = new Point(
+        this.character.position.x,
+        this.character.position.y
+      );
 
-      if (Utils.mag(Utils.sub(vec1, vec2)) < radius) {
-        if (this.isInvulnerability) {
-          return;
-        }
+      if (Utils.mag(Utils.sub(vec1, vec3)) < radiusCharacter) {
+        this.context.app.stage.emit(GameEvents.RESET_LEVEL);
+        return;
+      }
 
-        if (this.levelCounter === 0) {
-          this.context.app.stage.emit(GameEvents.RESET_LEVEL);
-          return;
-        }
+      if (Utils.mag(Utils.sub(vec1, vec2)) < radius && !this.isJump) {
+        this.isJump = true;
 
-        this.setInvulnerability();
-        this.levelCounter--;
+        this.animationComponent
+          .switchAnimation(CharacterAnimationType.Jump)
+          .play(false, 0.1);
+
+        this.velocity.y = this.jumpVelocity.y;
       }
     });
   }
@@ -150,11 +149,33 @@ export default class Character extends GameObject {
     this.placeObjects = placeObjects;
   }
 
+  onJump() {
+    if (!this.isFirstTap) {
+      this.isFirstTap = true;
+      return;
+    }
+
+    this.direction = -1;
+    this.deltaCloser = 0.4;
+
+    new Tween(null)
+      .to({}, 600)
+      .onComplete(() => {
+        this.direction = 1;
+        this.deltaCloser = 0.2;
+      })
+      .start();
+  }
+
   onTicker(dt: number) {
     this.checkCollision();
 
     if (this.isRemove) {
       return;
+    }
+
+    if (this.isFirstTap) {
+      this.position.x += this.deltaCloser * this.direction;
     }
 
     if (!this.isJump) {
@@ -173,31 +194,11 @@ export default class Character extends GameObject {
     }
   }
 
-  onJump() {
-    if (!this.isFirstTap) {
-      this.isFirstTap = true;
-      this.context.app.stage.emit(GameEvents.START_GAME);
-      return;
-    }
-
-    if (this.isJump) {
-      return;
-    }
-
-    this.isJump = true;
-
-    this.animationComponent
-      .switchAnimation(CharacterAnimationType.Jump)
-      .play(false, 0.1);
-
-    this.velocity.y = this.jumpVelocity.y;
-  }
-
   onRemove() {
     this.isRemove = true;
 
-    this.context.app.stage.off(GameEvents.TICKER, this.onTicker, this);
     this.context.app.stage.off(GameEvents.JUMP, this.onJump, this);
+    this.context.app.stage.off(GameEvents.TICKER, this.onTicker, this);
     this.context.app.stage.off(
       GameEvents.SET_PLACE_OBJECTS,
       this.onSetPlaceObjects,

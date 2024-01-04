@@ -4,6 +4,7 @@ import { IROContextCfg } from "../types";
 import { textures } from "../configs/loader";
 import Point from "../configs/Point";
 import GameEvents from "../constants/events/GameEvents";
+import RenderGameTypes from "../constants/events/RenderGameTypes";
 
 export default class Bg extends GameObject {
   layers: TilingSprite[];
@@ -24,6 +25,8 @@ export default class Bg extends GameObject {
     this.speed = context.jsons.game.config.speed;
     this.deltaParalaxSpeed = context.jsons.game.config.deltaParalaxSpeed;
     this.direction = context.jsons.game.config.direction;
+
+    this.renderLayer = RenderGameTypes.Bg;
 
     this.isMove = true;
   }
@@ -54,11 +57,11 @@ export default class Bg extends GameObject {
     this.context.app.stage.on(GameEvents.TICKER, this.onTicker, this);
   }
 
-  onTicker() {
+  onTicker(dt: number) {
     if (!this.isMove) {
       return;
     }
-    this.counter += this.speed;
+    this.counter -= this.speed * dt;
 
     this.layers.forEach((layer, index) => {
       layer.tilePosition = new Point(
