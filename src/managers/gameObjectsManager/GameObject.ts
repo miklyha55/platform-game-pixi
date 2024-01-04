@@ -2,16 +2,16 @@ import { Container } from "pixi.js";
 import GameEvents from "../../constants/events/GameEvents";
 import { Component } from "../../components/core/Component";
 import GameObjectManager from "./GameObjectManager";
-import { IROContext } from "../../types";
+import { IROContextCfg } from "../../types";
 
 export default class GameObject extends Container {
   name: string;
   renderLayer: string;
   components: Component[];
   gameObjectManager: GameObjectManager;
-  context: IROContext;
+  context: IROContextCfg;
 
-  constructor(context: IROContext) {
+  constructor(context: IROContextCfg) {
     super();
 
     this.renderLayer = "";

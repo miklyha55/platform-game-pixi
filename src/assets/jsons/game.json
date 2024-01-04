@@ -1,1 +1,14 @@
-{}
+{
+  "config": {
+    "speed": 0.5,
+    "deltaParalaxSpeed": 0.3,
+    "direction": -1,
+    "layers": ["bg1", "bg2"]
+  },
+  "blocks": {},
+  "character": {
+    "speed": { "x": 0, "y": 0.1 },
+    "jumpVelocity": { "x": 0, "y": -220 },
+    "animations": [["cat1", "cat2"], ["cat1"]]
+  }
+}

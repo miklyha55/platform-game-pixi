@@ -1,9 +1,9 @@
-const Enum = {
+const Constants = {
   Game: "Game",
 };
 
-export type RenderGameTypesCfg = {[key in keyof typeof Enum]: string };
+export type RenderGameTypesCfg = {[key in keyof typeof Constants]: string };
 
-const RenderGameTypes: RenderGameTypesCfg = Object.assign({}, Enum);
+const RenderGameTypes: RenderGameTypesCfg = Object.assign({}, Constants);
 
 export default RenderGameTypes;

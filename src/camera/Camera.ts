@@ -2,17 +2,17 @@ import { Container, Rectangle } from "pixi.js";
 import { Tween } from "tweedle.js";
 import { Utils } from "../configs/utils";
 import GameEvents from "../constants/events/GameEvents";
-import { IROContext, IRectangle } from "../types";
+import { IROContextCfg, IRectangle } from "../types";
 
 export class Camera {
   container: Container;
   target: Container;
   borderBox: Container;
-  context: IROContext;
+  context: IROContextCfg;
 
   isUpdateOnlyResize: boolean;
 
-  constructor(context: IROContext, container: Container) {
+  constructor(context: IROContextCfg, container: Container) {
     this.context = context;
     this.container = container;
     this.isUpdateOnlyResize = true;

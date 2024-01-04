@@ -1,16 +1,16 @@
 import { Container } from "pixi.js";
-import { IROContext } from "../../types";
+import { IROContextCfg } from "../../types";
 import GameEvents from "../../constants/events/GameEvents";
 import GameObjectManager from "../../managers/gameObjectsManager/GameObjectManager";
 import RenderManager from "../../managers/renderManager/RenderManager";
 import Point from "../../configs/Point";
 
 export default class BaseScene extends Container {
-  context: IROContext;
+  context: IROContextCfg;
   gameObjectManager: GameObjectManager;
   renderManager: RenderManager;
 
-  constructor(context: IROContext) {
+  constructor(context: IROContextCfg) {
     super();
 
     this.context = context;

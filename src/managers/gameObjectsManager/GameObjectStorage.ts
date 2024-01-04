@@ -1,11 +1,11 @@
 import GameObject from "./GameObject";
 import GameEvents from "../../constants/events/GameEvents";
-import { IROContext } from "../../types";
+import { IROContextCfg } from "../../types";
 
 export default class GameObjectStorage {
   gameObjects: GameObject[];
 
-  constructor(context: IROContext) {
+  constructor(context: IROContextCfg) {
     this.gameObjects = [];
 
     context.app.stage.on(GameEvents.GET_GAME_OBJECT, this.onGetGameObject, this);

@@ -1,13 +1,13 @@
 import { Container } from "pixi.js";
 import GameEvents from "../../constants/events/GameEvents";
-import { IROContext } from "../../types";
+import { IROContextCfg } from "../../types";
 import { RenderGameTypesCfg } from "../../constants/events/RenderGameTypes";
 import { RenderHudTypesCfg } from "../../constants/events/RenderHudTypes";
 
 export default class RenderStorage {
   renderLayers: Container[];
 
-  constructor(context: IROContext) {
+  constructor(context: IROContextCfg) {
     this.renderLayers = [];
 
     context.app.stage.on(

@@ -1,21 +1,22 @@
 import { Camera } from "../camera/Camera";
 import BaseScene from "./core/BaseScene";
-import { IROContext } from "../types";
+import { IROContextCfg } from "../types";
 import RenderManager from "../managers/renderManager/RenderManager";
 import RenderGameTypes from "../constants/events/RenderGameTypes";
-import Bg from "../gameObjects/Bg";
+import Level from "../gameObjects/Level";
 
 export default class GameScene extends BaseScene {
   camera: Camera;
-  bg: Bg;
+  level: Level;
   
-  constructor(context: IROContext) {
+  constructor(context: IROContextCfg) {
     super(context);
 
     this.renderManager = new RenderManager(this.context, this, RenderGameTypes);
   }
 
   onCreate() {
-    this.bg = this.gameObjectManager.create(new Bg(this.context)) as Bg;
+    this.level = this.gameObjectManager.create(new Level(this.context)) as Level;
+    console.log(this)
   }
 }

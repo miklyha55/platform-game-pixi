@@ -1,34 +1,46 @@
 import { Container } from "pixi.js";
 import GameEvents from "../../constants/events/GameEvents";
 import GameObject from "./GameObject";
-import { IROContext } from "../../types";
+import { IROContextCfg } from "../../types";
 
 export default class GameObjectManager {
   gameObjects: GameObject[];
-  context: IROContext;
+  context: IROContextCfg;
 
-  constructor(context: IROContext) {
+  constructor(context: IROContextCfg) {
     this.gameObjects = [];
     this.context = context;
   }
 
-  create(gameObject: GameObject) {
+  create(gameObject: GameObject, renderLayer: Container = null) {
     this.gameObjects.push(gameObject);
 
     this.context.app.stage.emit(GameEvents.SET_GAME_OBJECT, gameObject);
-    this.context.app.stage.emit(
-      GameEvents.GET_RENDER_LAYER,
-      gameObject.renderLayer,
-      (renderLayer: Container) => {
-        if (!renderLayer) return;
+    !renderLayer
+      ? this.context.app.stage.emit(
+          GameEvents.GET_RENDER_LAYER,
+          gameObject.renderLayer,
+          (renderLayer: Container) => {
+            if (!renderLayer) return;
 
-        renderLayer.addChild(gameObject);
-      }
-    );
+            renderLayer.addChild(gameObject);
+          }
+        )
+      : renderLayer.addChild(gameObject);
 
     gameObject.name = gameObject.constructor.name;
     gameObject.gameObjectManager = this;
     gameObject.onCreate();
+
+    gameObject.components.forEach((component, index) => {
+      component.context = this.context;
+      component.onCreate();
+
+      component.remove = () => {
+        component.onRemove();
+        gameObject.components.splice(index, 1);
+      };
+    });
 
     return gameObject;
   }

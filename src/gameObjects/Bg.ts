@@ -1,8 +1,7 @@
 import { SCALE_MODES, Texture, TilingSprite } from "pixi.js";
 import GameObject from "../managers/gameObjectsManager/GameObject";
-import { IROContext } from "../types";
+import { IROContextCfg } from "../types";
 import { textures } from "../configs/loader";
-import RenderGameTypes from "../constants/events/RenderGameTypes";
 import Point from "../configs/Point";
 import GameEvents from "../constants/events/GameEvents";
 
@@ -11,24 +10,22 @@ export default class Bg extends GameObject {
 
   counter: number;
   speed: number;
-  deltaSpeed: number;
+  deltaParalaxSpeed: number;
   direction: number;
 
   isMove: boolean;
 
-  constructor(context: IROContext) {
+  constructor(context: IROContextCfg) {
     super(context);
 
     this.layers = [];
 
     this.counter = 0;
-    this.speed = 0.5;
-    this.deltaSpeed = 0.3;
-    this.direction = -1;
+    this.speed = context.jsons.game.config.speed;
+    this.deltaParalaxSpeed = context.jsons.game.config.deltaParalaxSpeed;
+    this.direction = context.jsons.game.config.direction;
 
-    this.isMove = false;
-
-    this.renderLayer = RenderGameTypes.Game;
+    this.isMove = true;
   }
 
   createLayer(texture: Texture, width: number, height: number) {
@@ -46,8 +43,9 @@ export default class Bg extends GameObject {
     const width = 500;
     const height = 288;
 
-    this.createLayer(textures.bg1, width, height);
-    this.createLayer(textures.bg2, width, height);
+    this.context.jsons.game.config.layers?.forEach((layer) => {
+      this.createLayer(textures[layer], width, height);
+    });
 
     this.scale = new Point(6, 6);
     this.position = new Point(0, 200);
@@ -64,7 +62,7 @@ export default class Bg extends GameObject {
 
     this.layers.forEach((layer, index) => {
       layer.tilePosition = new Point(
-        this.counter * this.direction * (index * this.deltaSpeed || 1),
+        this.counter * this.direction * (index * this.deltaParalaxSpeed || 1),
         0
       );
     });

@@ -6,20 +6,21 @@ import HudScene from "../scenes/HudScene";
 import LoadingScene from "../scenes/LoadingScene";
 import GameEvents from "../constants/events/GameEvents";
 import { Resolution } from "../constants/app";
-import { ICustomApplication, IROContext } from "../types";
+import { ICustomApplicationCfg, IROContextCfg } from "../types";
 import GameObjectStorage from "../managers/gameObjectsManager/GameObjectStorage";
 import GameObjectManager from "../managers/gameObjectsManager/GameObjectManager";
 import RenderStorage from "../managers/renderManager/RenderStorage";
+import { jsons } from "../configs/loader";
 
 export default class Game extends Container {
   loadScene: LoadingScene;
   gameScene: GameScene;
   hudScene: HudScene;
-  context: IROContext;
+  context: IROContextCfg;
   gameObjectStorage: GameObjectStorage;
   renderStorage: RenderStorage;
 
-  constructor(app: ICustomApplication) {
+  constructor(app: ICustomApplicationCfg) {
     super();
 
     app.width = Resolution.width;
@@ -28,12 +29,13 @@ export default class Game extends Container {
 
     this.context = {
       app,
+      jsons,
     };
 
+    this.loadScene = new LoadingScene();
     this.renderStorage = new RenderStorage(this.context);
     this.gameObjectStorage = new GameObjectStorage(this.context);
 
-    this.loadScene = new LoadingScene();
     this.gameScene = new GameScene(this.context);
     this.hudScene = new HudScene(this.context);
 

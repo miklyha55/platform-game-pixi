@@ -2,16 +2,16 @@ import { Container } from "pixi.js";
 import GameEvents from "../../constants/events/GameEvents";
 import { RenderGameTypesCfg } from "../../constants/events/RenderGameTypes";
 import { RenderHudTypesCfg } from "../../constants/events/RenderHudTypes";
-import { IROContext } from "../../types";
+import { IROContextCfg } from "../../types";
 
 export default class RenderManager {
   renderLayerTypes: RenderGameTypesCfg | RenderHudTypesCfg;
   renderLayers: Container[];
   container: Container;
-  context: IROContext;
+  context: IROContextCfg;
 
   constructor(
-    context: IROContext,
+    context: IROContextCfg,
     container: Container,
     renderLayerTypes: RenderGameTypesCfg | RenderHudTypesCfg
   ) {

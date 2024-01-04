@@ -15,8 +15,10 @@ export class Animation extends Component {
     this.parent.addChild(this.sprite);
   }
 
-  switchAnimation(name: string) {
-    this.sprite.textures = this.animations[name];
+  switchAnimation(index: number) {
+    this.sprite.textures = this.animations[index];
+
+    return this;
   }
 
   play(isLoop: boolean, animationSpeed: number = 1) {
@@ -24,10 +26,12 @@ export class Animation extends Component {
     this.sprite.loop = isLoop;
 
     this.sprite.play();
+    return this;
   }
 
   stop() {
     this.sprite.stop();
+    return this;
   }
 
   onRemove() {

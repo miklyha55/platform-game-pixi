@@ -1,6 +1,6 @@
 import { Application } from "pixi.js";
 
-export interface ICustomApplication extends Application {
+export interface ICustomApplicationCfg extends Application {
   width?: number;
   height?: number;
   deltaScale?: number;
@@ -23,6 +23,24 @@ export interface IRectangle {
   height: number;
 }
 
-export interface IROContext {
-  readonly app: ICustomApplication;
+export interface IROContextCfg {
+  readonly app: ICustomApplicationCfg;
+  readonly jsons: IROJsonCfg;
+}
+
+export interface IROJsonCfg {
+  readonly game: {
+    readonly config: {
+      readonly speed: number;
+      readonly deltaParalaxSpeed: number;
+      readonly direction: number;
+      readonly layers: string[];
+    };
+    readonly blocks: {};
+    readonly character: {
+      readonly speed: IVev2;
+      readonly jumpVelocity: IVev2;
+      readonly animations: string[][];
+    };
+  };
 }

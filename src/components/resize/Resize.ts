@@ -2,14 +2,14 @@ import { Container, Sprite } from "pixi.js";
 import { Component } from "../core/Component";
 import GameEvents from "../../constants/events/GameEvents";
 import { IROOrientationCfg, IROResizeCfg } from "./types";
-import { IROContext } from "../../types";
+import { IROContextCfg } from "../../types";
 import Point from "../../configs/Point";
 
 export class Resize extends Component {
   parent: Container;
   landscape: IROOrientationCfg;
   portrait: IROOrientationCfg;
-  context: IROContext;
+  context: IROContextCfg;
 
   constructor({ parent, landscape, portrait, context }: IROResizeCfg) {
     super(parent);
