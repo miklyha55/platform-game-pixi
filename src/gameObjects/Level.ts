@@ -1,5 +1,5 @@
 import GameEvents from "../constants/events/GameEvents";
-import PlaceManager from "../managers/placeManager/PlaceManager";
+import PlaceManager from "../managers/placeManager/core/PlaceManager";
 import GameObjectManager from "../managers/gameObjectsManager/GameObjectManager";
 import Bg from "./Bg";
 import Character from "./character/Character";

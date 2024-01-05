@@ -22,9 +22,9 @@ export default class Bg extends GameObject {
     this.layers = [];
 
     this.counter = 0;
-    this.speed = context.jsons.game.config.speed;
-    this.deltaParalaxSpeed = context.jsons.game.config.deltaParalaxSpeed;
-    this.direction = context.jsons.game.config.direction;
+    this.speed = context.jsons.game.speed;
+    this.deltaParalaxSpeed = context.jsons.game.bg.deltaParalaxSpeed;
+    this.direction = context.jsons.game.bg.direction;
 
     this.renderLayer = RenderGameTypes.Bg;
 
@@ -46,7 +46,7 @@ export default class Bg extends GameObject {
     const width = 500;
     const height = 288;
 
-    this.context.jsons.game.config.layers?.forEach((layer) => {
+    this.context.jsons.game.bg.layers?.forEach((layer) => {
       this.createLayer(textures[layer], width, height);
     });
 
@@ -54,7 +54,13 @@ export default class Bg extends GameObject {
     this.position = new Point(0, 200);
 
     this.layers.reverse();
+
     this.context.app.stage.on(GameEvents.TICKER, this.onTicker, this);
+    this.context.app.stage.on(GameEvents.DEATH, this.onDeath, this);
+  }
+
+  onDeath() {
+    this.context.app.stage.off(GameEvents.TICKER, this.onTicker, this);
   }
 
   onTicker(dt: number) {
@@ -73,5 +79,6 @@ export default class Bg extends GameObject {
 
   onRemove() {
     this.context.app.stage.off(GameEvents.TICKER, this.onTicker, this);
+    this.context.app.stage.off(GameEvents.DEATH, this.onDeath, this);
   }
 }

@@ -4,9 +4,10 @@ import bg2 from "../assets/images/game/bg_2.png";
 import cat1 from "../assets/images/game/cat/cat_1.png";
 import cat2 from "../assets/images/game/cat/cat_2.png";
 
-import block1 from "../assets/images/game/blocks/block_1.png";
-import block2 from "../assets/images/game/blocks/block_2.png";
-import block3 from "../assets/images/game/blocks/block_3.png";
+import pig1 from "../assets/images/game/pig/pig_1.png";
+import pig2 from "../assets/images/game/pig/pig_2.png";
+
+import block from "../assets/images/game/block.png";
 
 import coin from "../assets/images/ui/coin.png";
 import life from "../assets/images/ui/life.png";
@@ -14,15 +15,13 @@ import life from "../assets/images/ui/life.png";
 export const textureAssets = {
   bg1,
   bg2,
-  cat: {
+  characters: {
     cat1,
     cat2,
+    pig1,
+    pig2,
   },
-  block: {
-    block1,
-    block2,
-    block3,
-  },
+  block,
   coin,
   life,
 };

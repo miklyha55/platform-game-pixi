@@ -30,8 +30,8 @@ export interface IROContextCfg {
 
 export interface IROJsonCfg {
   readonly game: {
-    readonly config: {
-      readonly speed: number;
+    readonly speed: number;
+    readonly bg: {
       readonly deltaParalaxSpeed: number;
       readonly direction: number;
       readonly layers: string[];
@@ -42,13 +42,13 @@ export interface IROJsonCfg {
       readonly spawnPositionsY: number[];
     };
     readonly character: {
+      readonly livesCounter: number;
       readonly speed: IVev2;
       readonly jumpVelocity: IVev2;
+      readonly jumpVelocityDeath: IVev2;
       readonly animations: string[][];
     };
     readonly ai: {
-      readonly speed: IVev2;
-      readonly jumpVelocity: IVev2;
       readonly animations: string[][];
     };
   };

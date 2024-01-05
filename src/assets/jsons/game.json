@@ -1,6 +1,6 @@
 {
-  "config": {
-    "speed": 0.8,
+  "speed": 0.85,
+  "bg": {
     "deltaParalaxSpeed": 0.3,
     "direction": 1,
     "layers": ["bg1", "bg2"]
@@ -8,16 +8,16 @@
   "blocks": {
     "spawnDistance": 1500,
     "countBlocksOnScreen": 6,
-    "spawnPositionsY": [-100, -50, 0, 60]
+    "spawnPositionsY": [-140, -100, -50, 0, 60]
   },
   "character": {
+    "livesCounter": 3,
     "speed": { "x": 0, "y": 0.1 },
     "jumpVelocity": { "x": 0, "y": -220 },
+    "jumpVelocityDeath": { "x": 0, "y": -150 },
     "animations": [["cat1", "cat2"], ["cat1"]]
   },
   "ai": {
-    "speed": { "x": 0, "y": 0.1 },
-    "jumpVelocity": { "x": 0, "y": -220 },
-    "animations": [["cat1", "cat2"], ["cat1"]]
+    "animations": [["pig1", "pig2"], ["pig2"]]
   }
 }

@@ -7,7 +7,8 @@ import CharacterAnimationType from "./constants";
 import GameEvents from "../../constants/events/GameEvents";
 import RenderGameTypes from "../../constants/events/RenderGameTypes";
 import GameObject from "../../managers/gameObjectsManager/GameObject";
-import PlaceObject from "../../managers/placeManager/PlaceObject";
+import PlaceObject from "../../managers/placeManager/core/PlaceObject";
+import PlaceObjectType from "../../managers/placeManager/constants";
 import { Animation } from "../../components/animation/Animation";
 import { IROContextCfg, IVev2 } from "../../types";
 
@@ -17,7 +18,7 @@ export default class Character extends GameObject {
   placeObjects: PlaceObject[];
   animationComponent: Animation;
 
-  levelCounter: number;
+  livesCounter: number;
 
   terminalVelocity: IVev2;
   jumpVelocity: IVev2;
@@ -28,7 +29,7 @@ export default class Character extends GameObject {
   isInvulnerability: boolean;
   isFirstTap: boolean;
   isJump: boolean;
-  isRemove: boolean;
+  isDeath: boolean;
 
   constructor(context: IROContextCfg) {
     super(context);
@@ -41,15 +42,16 @@ export default class Character extends GameObject {
     this.velocity = { x: 0, y: 0 };
     this.gravity = { x: 0, y: 9.5 };
 
-    this.levelCounter = 3;
+    this.livesCounter = this.context.jsons.game.character.livesCounter;
 
     this.isInvulnerability = false;
     this.isFirstTap = false;
     this.isJump = true;
-    this.isRemove = false;
+    this.isDeath = false;
 
     this.placeObjects = [];
     this.animations = [];
+
     this.fillAnimations();
 
     this.animationComponent = new Animation({
@@ -76,7 +78,7 @@ export default class Character extends GameObject {
     this.context.jsons.game.character.animations.forEach((frames) => {
       this.animations.push(
         frames.map((frame) => {
-          return textures.cat[frame];
+          return textures.characters[frame];
         })
       );
     });
@@ -106,10 +108,6 @@ export default class Character extends GameObject {
     const radius: number = 70;
 
     this.placeObjects.forEach((placeObject) => {
-      if (this.isRemove) {
-        return;
-      }
-
       const vec1: IVev2 = new Point(this.position.x, this.position.y);
       const vec2: IVev2 = new Point(
         placeObject.position.x,
@@ -117,17 +115,21 @@ export default class Character extends GameObject {
       );
 
       if (Utils.mag(Utils.sub(vec1, vec2)) < radius) {
-        if (this.isInvulnerability) {
-          return;
-        }
+        if (placeObject.type === PlaceObjectType.Collectable) {
+          placeObject.alpha = 0;
+        } else {
+          if (this.isInvulnerability) {
+            return;
+          }
 
-        if (this.levelCounter === 0) {
-          this.context.app.stage.emit(GameEvents.RESET_LEVEL);
-          return;
-        }
+          if (this.livesCounter === 0) {
+            this.context.app.stage.emit(GameEvents.DEATH);
+            return;
+          }
 
-        this.setInvulnerability();
-        this.levelCounter--;
+          this.setInvulnerability();
+          this.livesCounter--;
+        }
       }
     });
   }
@@ -137,6 +139,7 @@ export default class Character extends GameObject {
       .switchAnimation(CharacterAnimationType.Jump)
       .play(false, 0.1);
 
+    this.context.app.stage.on(GameEvents.DEATH, this.onDeath, this);
     this.context.app.stage.on(GameEvents.JUMP, this.onJump, this);
     this.context.app.stage.on(GameEvents.TICKER, this.onTicker, this);
     this.context.app.stage.on(
@@ -146,16 +149,23 @@ export default class Character extends GameObject {
     );
   }
 
+  onDeath() {
+    this.isDeath = true;
+
+    this.jumpVelocity = this.context.jsons.game.character.jumpVelocityDeath;
+    this.isJump = false;
+
+    this.onJump();
+
+    this.context.app.stage.off(GameEvents.DEATH, this.onDeath, this);
+  }
+
   onSetPlaceObjects(placeObjects: PlaceObject[]) {
     this.placeObjects = placeObjects;
   }
 
-  onTicker(dt: number) {
+  async onTicker(dt: number) {
     this.checkCollision();
-
-    if (this.isRemove) {
-      return;
-    }
 
     if (!this.isJump) {
       return;
@@ -167,9 +177,21 @@ export default class Character extends GameObject {
     if (this.position.y > this.terminalVelocity.y) {
       this.isJump = false;
       this.position.y = this.terminalVelocity.y;
+
+      if (this.isDeath) {
+        this.animationComponent
+          .switchAnimation(CharacterAnimationType.Jump)
+          .play(false, 0.15);
+        this.context.app.stage.off(GameEvents.TICKER, this.onTicker, this);
+
+        await Utils.delay(1000);
+        this.context.app.stage.emit(GameEvents.RESET_LEVEL);
+        return;
+      }
+
       this.animationComponent
         .switchAnimation(CharacterAnimationType.Run)
-        .play(true, 0.1);
+        .play(true, 0.15);
     }
   }
 
@@ -180,6 +202,10 @@ export default class Character extends GameObject {
       return;
     }
 
+    if (this.isDeath) {
+      this.sprite.scale.y = -1;
+    }
+
     if (this.isJump) {
       return;
     }
@@ -188,15 +214,12 @@ export default class Character extends GameObject {
 
     this.animationComponent
       .switchAnimation(CharacterAnimationType.Jump)
-      .play(false, 0.1);
+      .play(false, 0.15);
 
     this.velocity.y = this.jumpVelocity.y;
   }
 
   onRemove() {
-    this.isRemove = true;
-
-    this.context.app.stage.off(GameEvents.TICKER, this.onTicker, this);
     this.context.app.stage.off(GameEvents.JUMP, this.onJump, this);
     this.context.app.stage.off(
       GameEvents.SET_PLACE_OBJECTS,

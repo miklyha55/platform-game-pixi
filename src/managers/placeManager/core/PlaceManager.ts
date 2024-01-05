@@ -1,8 +1,9 @@
-import { Container, Point } from "pixi.js";
-import { IROContextCfg } from "../../types";
-import GameObjectManager from "../gameObjectsManager/GameObjectManager";
+import GameEvents from "../../../constants/events/GameEvents";
+import GameObjectManager from "../../gameObjectsManager/GameObjectManager";
 import PlaceObject from "./PlaceObject";
-import GameEvents from "../../constants/events/GameEvents";
+import Block from "../Block";
+import Coin from "../Coint";
+import { IROContextCfg } from "../../../types";
 
 export default class PlaceManager {
   placeObjects: PlaceObject[];
@@ -24,6 +25,7 @@ export default class PlaceManager {
       this.onSpawnPlaceObject,
       this
     );
+    this.context.app.stage.on(GameEvents.DEATH, this.onDeath, this);
 
     this.context.app.stage.emit(
       GameEvents.SET_PLACE_OBJECTS,
@@ -31,28 +33,41 @@ export default class PlaceManager {
     );
   }
 
-  remove() {
-    this.placeObjects.forEach((placeObject) => {
-      placeObject.remove();
-    });
-    this.placeObjects = [];
-
+  onDeath() {
+    this.context.app.stage.off(GameEvents.DEATH, this.onDeath, this);
     this.context.app.stage.off(
       GameEvents.SPAWN_PLACE_OBJECT,
       this.onSpawnPlaceObject
     );
   }
 
+  remove() {
+    this.placeObjects.forEach((placeObject) => {
+      placeObject.remove();
+    });
+
+    this.placeObjects = [];
+  }
+
   onSpawnPlaceObject() {
-    const rand: number = Math.round(
+    const randPositionY: number = Math.round(
       Math.random() * (this.spawnPositionsY.length - 1)
     );
 
-    const placeObject: PlaceObject = this.gameObjectManager.create(
-      new PlaceObject(this.context)
-    ) as PlaceObject;
+    const randPlaceObjectType: number = Math.round(Math.random() * 10);
+    let placeObject: PlaceObject = null;
 
-    placeObject.y = this.spawnPositionsY[rand];
+    if (randPlaceObjectType > 2) {
+      placeObject = this.gameObjectManager.create(
+        new Block(this.context)
+      ) as Block;
+    } else {
+      placeObject = this.gameObjectManager.create(
+        new Coin(this.context)
+      ) as Coin;
+    }
+
+    placeObject.y = this.spawnPositionsY[randPositionY];
     placeObject.x = this.spawnDistance / 2;
 
     this.placeObjects.push(placeObject);
