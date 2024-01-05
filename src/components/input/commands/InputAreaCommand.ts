@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { InputCatcher } from "../InputCatcher";
-import GameEvents from "../../../constants/events/GameEvents";
+import GameEvents from "../../../constants/GameEvents";
 
 export class InputAreaCommand extends InputCatcher {
   constructor(parent: Container) {

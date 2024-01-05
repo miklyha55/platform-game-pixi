@@ -1,10 +1,10 @@
 import { Camera } from "../camera/Camera";
 import BaseScene from "./core/BaseScene";
-import { IROContextCfg } from "../types";
+import RenderGameTypes from "../constants/RenderGameTypes";
+import GameEvents from "../constants/GameEvents";
 import RenderManager from "../managers/renderManager/RenderManager";
-import RenderGameTypes from "../constants/events/RenderGameTypes";
 import Level from "../gameObjects/Level";
-import GameEvents from "../constants/events/GameEvents";
+import { IROContextCfg } from "../types";
 
 export default class GameScene extends BaseScene {
   camera: Camera;

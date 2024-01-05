@@ -4,7 +4,7 @@ import { textures } from "../../configs/loader";
 import Point from "../../configs/Point";
 import { Utils } from "../../configs/utils";
 import CharacterAnimationType from "./constants";
-import GameEvents from "../../constants/events/GameEvents";
+import GameEvents from "../../constants/GameEvents";
 import PlaceObjectType from "../../managers/placeManager/constants";
 import Character from "./Character";
 import { IROContextCfg, IVev2 } from "../../types";
@@ -22,7 +22,7 @@ export default class Ai extends Character {
     this.direction = 1;
     this.deltaCloser = 0.2;
 
-    this.position = new Point(-500, -150);
+    this.position = new Point(-700, -150);
 
     new Tween(this).to({ x: -200 }, 300).start();
   }
@@ -130,7 +130,7 @@ export default class Ai extends Character {
 
     this.sprite.scale.x = -1;
     new Tween(this)
-      .to({ x: -500, y: 50 }, 300)
+      .to({ x: -700, y: 50 }, 300)
       .onComplete(() => {})
       .start();
 

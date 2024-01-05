@@ -1,7 +1,7 @@
 import { SCALE_MODES, Sprite, Texture } from "pixi.js";
-import RenderGameTypes from "../../../constants/events/RenderGameTypes";
-import GameEvents from "../../../constants/events/GameEvents";
 import Point from "../../../configs/Point";
+import RenderGameTypes from "../../../constants/RenderGameTypes";
+import GameEvents from "../../../constants/GameEvents";
 import GameObject from "../../gameObjectsManager/GameObject";
 import { IROContextCfg } from "../../../types";
 

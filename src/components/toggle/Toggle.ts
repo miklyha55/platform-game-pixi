@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import { Tween } from "tweedle.js";
 import { Component } from "../core/Component";
-import GameEvents from "../../constants/events/GameEvents";
+import GameEvents from "../../constants/GameEvents";
 import { IROToggleCfg } from "./types";
 
 export class Toggle extends Component {

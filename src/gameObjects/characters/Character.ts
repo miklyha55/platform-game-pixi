@@ -4,8 +4,8 @@ import { textures } from "../../configs/loader";
 import Point from "../../configs/Point";
 import { Utils } from "../../configs/utils";
 import CharacterAnimationType from "./constants";
-import GameEvents from "../../constants/events/GameEvents";
-import RenderGameTypes from "../../constants/events/RenderGameTypes";
+import GameEvents from "../../constants/GameEvents";
+import RenderGameTypes from "../../constants/RenderGameTypes";
 import GameObject from "../../managers/gameObjectsManager/GameObject";
 import PlaceObject from "../../managers/placeManager/core/PlaceObject";
 import PlaceObjectType from "../../managers/placeManager/constants";
@@ -158,6 +158,7 @@ export default class Character extends GameObject {
     this.onJump();
 
     this.context.app.stage.off(GameEvents.DEATH, this.onDeath, this);
+    this.context.app.stage.emit(GameEvents.ZOOM_CAMERA, { zoom: 0.8 });
   }
 
   onSetPlaceObjects(placeObjects: PlaceObject[]) {

@@ -1,4 +1,4 @@
-import GameEvents from "../../../constants/events/GameEvents";
+import GameEvents from "../../../constants/GameEvents";
 import GameObjectManager from "../../gameObjectsManager/GameObjectManager";
 import PlaceObject from "./PlaceObject";
 import Block from "../Block";

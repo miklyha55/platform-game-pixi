@@ -1,16 +1,16 @@
 import { Container } from "pixi.js";
 import * as TWEEDLE from "tweedle.js";
+import { jsons } from "../configs/loader";
+import GameEvents from "../constants/GameEvents";
+import { Resolution } from "./constants";
 import { Camera } from "../camera/Camera";
 import GameScene from "../scenes/GameScene";
 import HudScene from "../scenes/HudScene";
 import LoadingScene from "../scenes/LoadingScene";
-import GameEvents from "../constants/events/GameEvents";
-import { Resolution } from "../constants/app";
-import { ICustomApplicationCfg, IROContextCfg } from "../types";
 import GameObjectStorage from "../managers/gameObjectsManager/GameObjectStorage";
 import GameObjectManager from "../managers/gameObjectsManager/GameObjectManager";
 import RenderStorage from "../managers/renderManager/RenderStorage";
-import { jsons } from "../configs/loader";
+import { ICustomApplicationCfg, IROContextCfg } from "../types";
 
 export default class Game extends Container {
   loadScene: LoadingScene;

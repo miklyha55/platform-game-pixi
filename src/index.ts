@@ -1,7 +1,7 @@
 import { Application } from "pixi.js";
 import "@pixi/math-extras";
 import "./css/main.css";
-import GameEvents from "./constants/events/GameEvents";
+import GameEvents from "./constants/GameEvents";
 import Game from "./app/Game";
 
 const app: Application = new Application({

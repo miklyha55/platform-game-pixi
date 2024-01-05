@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import BaseScene from "./core/BaseScene";
-import RenderHudTypes from "../constants/events/RenderHudTypes";
+import RenderHudTypes from "../constants/RenderHudTypes";
 import RenderManager from "../managers/renderManager/RenderManager";
 import InputArea from "../gameObjects/InputArea";
 import { IROContextCfg } from "../types";

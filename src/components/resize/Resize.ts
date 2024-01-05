@@ -1,6 +1,6 @@
 import { Container, Sprite } from "pixi.js";
 import { Component } from "../core/Component";
-import GameEvents from "../../constants/events/GameEvents";
+import GameEvents from "../../constants/GameEvents";
 import { IROOrientationCfg, IROResizeCfg } from "./types";
 import { IROContextCfg } from "../../types";
 import Point from "../../configs/Point";

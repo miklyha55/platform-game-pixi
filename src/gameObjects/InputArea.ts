@@ -1,11 +1,11 @@
 import { Graphics } from "pixi.js";
 import Point from "../configs/Point";
-import GameEvents from "../constants/events/GameEvents";
+import GameEvents from "../constants/GameEvents";
+import RenderHudTypes from "../constants/RenderHudTypes";
 import GameObject from "../managers/gameObjectsManager/GameObject";
 import { Resize } from "../components/resize/Resize";
 import { InputAreaCommand } from "../components/input/commands/InputAreaCommand";
 import { IROContextCfg } from "../types";
-import RenderHudTypes from "../constants/events/RenderHudTypes";
 
 export default class InputArea extends GameObject {
   graphics: Graphics;

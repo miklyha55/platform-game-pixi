@@ -1,5 +1,5 @@
 import { Container } from "pixi.js";
-import GameEvents from "../../constants/events/GameEvents";
+import GameEvents from "../../constants/GameEvents";
 import { Component } from "../../components/core/Component";
 import GameObjectManager from "./GameObjectManager";
 import { IROContextCfg } from "../../types";

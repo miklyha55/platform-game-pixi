@@ -1,5 +1,5 @@
 import GameObject from "./GameObject";
-import GameEvents from "../../constants/events/GameEvents";
+import GameEvents from "../../constants/GameEvents";
 import { IROContextCfg } from "../../types";
 
 export default class GameObjectStorage {

@@ -1,8 +1,8 @@
 import { Container } from "pixi.js";
-import GameEvents from "../../constants/events/GameEvents";
+import GameEvents from "../../constants/GameEvents";
+import { RenderGameTypesCfg } from "../../constants/RenderGameTypes";
+import { RenderHudTypesCfg } from "../../constants/RenderHudTypes";
 import { IROContextCfg } from "../../types";
-import { RenderGameTypesCfg } from "../../constants/events/RenderGameTypes";
-import { RenderHudTypesCfg } from "../../constants/events/RenderHudTypes";
 
 export default class RenderStorage {
   renderLayers: Container[];

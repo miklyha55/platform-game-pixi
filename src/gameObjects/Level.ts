@@ -1,9 +1,9 @@
-import GameEvents from "../constants/events/GameEvents";
+import GameEvents from "../constants/GameEvents";
 import PlaceManager from "../managers/placeManager/core/PlaceManager";
 import GameObjectManager from "../managers/gameObjectsManager/GameObjectManager";
+import Character from "./characters/Character";
 import Bg from "./Bg";
-import Character from "./character/Character";
-import Ai from "./character/Ai";
+import Ai from "./characters/Ai";
 import { IROContextCfg } from "../types";
 
 export default class Level {
@@ -20,6 +20,8 @@ export default class Level {
   }
 
   create() {
+    this.context.app.stage.emit(GameEvents.ZOOM_CAMERA, { zoom: 1 });
+
     this.bg = this.gameObjectManager.create(new Bg(this.context)) as Bg;
     this.character = this.gameObjectManager.create(
       new Character(this.context)

@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
-import GameEvents from "../../constants/events/GameEvents";
-import { RenderGameTypesCfg } from "../../constants/events/RenderGameTypes";
-import { RenderHudTypesCfg } from "../../constants/events/RenderHudTypes";
+import GameEvents from "../../constants/GameEvents";
+import { RenderGameTypesCfg } from "../../constants/RenderGameTypes";
+import { RenderHudTypesCfg } from "../../constants/RenderHudTypes";
 import { IROContextCfg } from "../../types";
 
 export default class RenderManager {

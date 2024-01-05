@@ -3,8 +3,8 @@ import GameObject from "../managers/gameObjectsManager/GameObject";
 import { IROContextCfg } from "../types";
 import { textures } from "../configs/loader";
 import Point from "../configs/Point";
-import GameEvents from "../constants/events/GameEvents";
-import RenderGameTypes from "../constants/events/RenderGameTypes";
+import GameEvents from "../constants/GameEvents";
+import RenderGameTypes from "../constants/RenderGameTypes";
 
 export default class Bg extends GameObject {
   layers: TilingSprite[];

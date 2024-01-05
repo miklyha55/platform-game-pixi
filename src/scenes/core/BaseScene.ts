@@ -1,9 +1,9 @@
 import { Container } from "pixi.js";
-import { IROContextCfg } from "../../types";
-import GameEvents from "../../constants/events/GameEvents";
+import Point from "../../configs/Point";
+import GameEvents from "../../constants/GameEvents";
 import GameObjectManager from "../../managers/gameObjectsManager/GameObjectManager";
 import RenderManager from "../../managers/renderManager/RenderManager";
-import Point from "../../configs/Point";
+import { IROContextCfg } from "../../types";
 
 export default class BaseScene extends Container {
   context: IROContextCfg;
