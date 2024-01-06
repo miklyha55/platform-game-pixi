@@ -9,8 +9,6 @@ Thumbs.db
 # Vendors
 node_modules
 node_modules/
-dist
-dist/
 psd
 raw
 package-lock.json
