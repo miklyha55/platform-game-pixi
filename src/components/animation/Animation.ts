@@ -3,8 +3,8 @@ import { Component } from "../core/Component";
 import { IROAnimationCfg } from "./types";
 
 export class Animation extends Component {
-  sprite: AnimatedSprite;
-  animations: Texture[][];
+  readonly sprite: AnimatedSprite;
+  private readonly animations: Texture[][];
 
   constructor({ parent, animations, currentAnimationName }: IROAnimationCfg) {
     super(parent);
@@ -34,7 +34,7 @@ export class Animation extends Component {
     return this;
   }
 
-  onRemove() {
+  override onRemove() {
     this.sprite.stop();
     this.sprite.destroy();
   }

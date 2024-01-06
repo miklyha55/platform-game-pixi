@@ -33,11 +33,12 @@ export default class GameObject extends Container {
     this.destroy();
   }
 
+  onCreate() {}
+
   getComponentByName(name: string) {
     return this.components.find((component) => component.name === name);
   }
 
-  onUpdate(dt: number) {}
-  onRemove() {}
-  onCreate() {}
+  protected onRemove() {}
+  protected onUpdate(dt: number) {}
 }

@@ -1,14 +1,19 @@
 import { Graphics } from "pixi.js";
-import Point from "../configs/Point";
-import GameEvents from "../constants/GameEvents";
-import RenderHudTypes from "../constants/RenderHudTypes";
-import GameObject from "../managers/gameObjectsManager/GameObject";
-import { Resize } from "../components/resize/Resize";
-import { InputAreaCommand } from "../components/input/commands/InputAreaCommand";
-import { IROContextCfg } from "../types";
+
+import Point from "../../configs/Point";
+
+import GameEvents from "../../constants/GameEvents";
+
+import RenderHudTypes from "../../managers/renderManager/constants/RenderHudTypes";
+import GameObject from "../../managers/gameObjectsManager/GameObject";
+
+import { Resize } from "../../components/resize/Resize";
+import { InputAreaCommand } from "../../components/input/commands/InputAreaCommand";
+
+import { IROContextCfg } from "../../types";
 
 export default class InputArea extends GameObject {
-  graphics: Graphics;
+  private readonly graphics: Graphics;
 
   constructor(context: IROContextCfg) {
     super(context);
@@ -44,11 +49,11 @@ export default class InputArea extends GameObject {
     this.renderLayer = RenderHudTypes.Ui;
   }
 
-  onToggleInputArea(active: boolean) {
+  private onToggleInputArea(active: boolean) {
     this.interactive = active;
   }
 
-  onRemove() {
+  override onRemove() {
     this.context.app.stage.off(
       GameEvents.TOGGLE_INPUT_AREA,
       this.onToggleInputArea,

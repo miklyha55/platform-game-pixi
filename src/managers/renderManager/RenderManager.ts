@@ -1,14 +1,16 @@
 import { Container } from "pixi.js";
+
 import GameEvents from "../../constants/GameEvents";
-import { RenderGameTypesCfg } from "../../constants/RenderGameTypes";
-import { RenderHudTypesCfg } from "../../constants/RenderHudTypes";
+import { RenderGameTypesCfg } from "./constants/RenderGameTypes";
+import { RenderHudTypesCfg } from "./constants/RenderHudTypes";
+
 import { IROContextCfg } from "../../types";
 
 export default class RenderManager {
-  renderLayerTypes: RenderGameTypesCfg | RenderHudTypesCfg;
-  renderLayers: Container[];
-  container: Container;
-  context: IROContextCfg;
+  private readonly renderLayerTypes: RenderGameTypesCfg | RenderHudTypesCfg;
+  private readonly renderLayers: Container[];
+  private readonly container: Container;
+  private readonly context: IROContextCfg;
 
   constructor(
     context: IROContextCfg,
@@ -23,7 +25,7 @@ export default class RenderManager {
     this.createLayers();
   }
 
-  createLayers() {
+  private createLayers() {
     for (const key in this.renderLayerTypes) {
       if (Object.hasOwnProperty.call(this.renderLayerTypes, key)) {
         const container: Container = new Container();

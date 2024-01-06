@@ -1,35 +1,40 @@
 import { AnimatedSprite, SCALE_MODES, Texture } from "pixi.js";
 import { Tween } from "tweedle.js";
-import { textures } from "../../configs/loader";
-import Point from "../../configs/Point";
-import { Utils } from "../../configs/utils";
+
+import { textures } from "../../../configs/loader";
+import Point from "../../../configs/Point";
+import { Utils } from "../../../configs/utils";
+
 import CharacterAnimationType from "./constants";
-import GameEvents from "../../constants/GameEvents";
-import RenderGameTypes from "../../constants/RenderGameTypes";
-import GameObject from "../../managers/gameObjectsManager/GameObject";
-import PlaceObject from "../../managers/placeManager/core/PlaceObject";
-import PlaceObjectType from "../../managers/placeManager/constants";
-import { Animation } from "../../components/animation/Animation";
-import { IROContextCfg, IVev2 } from "../../types";
+import GameEvents from "../../../constants/GameEvents";
+
+import RenderGameTypes from "../../../managers/renderManager/constants/RenderGameTypes";
+import GameObject from "../../../managers/gameObjectsManager/GameObject";
+import PlaceObject from "../../../managers/placeManager/core/PlaceObject";
+import PlaceObjectType from "../../../managers/placeManager/constants";
+
+import { Animation } from "../../../components/animation/Animation";
+
+import { IROContextCfg, IVev2 } from "../../../types";
 
 export default class Character extends GameObject {
-  sprite: AnimatedSprite;
-  animations: Texture[][];
-  placeObjects: PlaceObject[];
-  animationComponent: Animation;
+  protected sprite: AnimatedSprite;
+  protected animations: Texture[][];
+  protected placeObjects: PlaceObject[];
+  protected animationComponent: Animation;
 
-  livesCounter: number;
+  private livesCounter: number;
 
-  terminalVelocity: IVev2;
-  jumpVelocity: IVev2;
-  speed: IVev2;
-  velocity: IVev2;
-  gravity: IVev2;
+  protected terminalVelocity: IVev2;
+  protected jumpVelocity: IVev2;
+  protected speed: IVev2;
+  protected velocity: IVev2;
+  protected gravity: IVev2;
 
-  isInvulnerability: boolean;
-  isFirstTap: boolean;
-  isJump: boolean;
-  isDeath: boolean;
+  private isInvulnerability: boolean;
+  protected isFirstTap: boolean;
+  protected isJump: boolean;
+  protected isDeath: boolean;
 
   constructor(context: IROContextCfg) {
     super(context);
@@ -70,7 +75,7 @@ export default class Character extends GameObject {
     this.position = new Point(0, -50);
   }
 
-  fillAnimations() {
+  protected fillAnimations() {
     if (!this.context.jsons.game.character.animations) {
       return;
     }
@@ -90,7 +95,7 @@ export default class Character extends GameObject {
     });
   }
 
-  setInvulnerability() {
+  protected setInvulnerability() {
     this.isInvulnerability = true;
 
     new Tween(this)
@@ -104,9 +109,7 @@ export default class Character extends GameObject {
       .start();
   }
 
-  checkCollision() {
-    const radius: number = 70;
-
+  protected checkCollision() {
     this.placeObjects.forEach((placeObject) => {
       const vec1: IVev2 = new Point(this.position.x, this.position.y);
       const vec2: IVev2 = new Point(
@@ -114,13 +117,20 @@ export default class Character extends GameObject {
         placeObject.position.y
       );
 
-      if (Utils.mag(Utils.sub(vec1, vec2)) < radius) {
+      if (Utils.mag(Utils.sub(vec1, vec2)) < 70) {
+        if (!placeObject.alpha || this.isDeath) {
+          return;
+        }
+
         if (placeObject.type === PlaceObjectType.Collectable) {
+          this.context.app.stage.emit(GameEvents.SET_COINS);
           placeObject.alpha = 0;
         } else {
           if (this.isInvulnerability) {
             return;
           }
+          this.livesCounter--;
+          this.context.app.stage.emit(GameEvents.SET_LIVES);
 
           if (this.livesCounter === 0) {
             this.context.app.stage.emit(GameEvents.DEATH);
@@ -128,13 +138,12 @@ export default class Character extends GameObject {
           }
 
           this.setInvulnerability();
-          this.livesCounter--;
         }
       }
     });
   }
 
-  onCreate() {
+  override onCreate() {
     this.animationComponent
       .switchAnimation(CharacterAnimationType.Jump)
       .play(false, 0.1);
@@ -149,7 +158,7 @@ export default class Character extends GameObject {
     );
   }
 
-  onDeath() {
+  protected onDeath() {
     this.isDeath = true;
 
     this.jumpVelocity = this.context.jsons.game.character.jumpVelocityDeath;
@@ -161,11 +170,11 @@ export default class Character extends GameObject {
     this.context.app.stage.emit(GameEvents.ZOOM_CAMERA, { zoom: 0.8 });
   }
 
-  onSetPlaceObjects(placeObjects: PlaceObject[]) {
+  protected onSetPlaceObjects(placeObjects: PlaceObject[]) {
     this.placeObjects = placeObjects;
   }
 
-  async onTicker(dt: number) {
+  protected async onTicker(dt: number) {
     this.checkCollision();
 
     if (!this.isJump) {
@@ -196,11 +205,12 @@ export default class Character extends GameObject {
     }
   }
 
-  onJump() {
+  protected onJump() {
     if (!this.isFirstTap) {
       this.isFirstTap = true;
+
+      this.context.app.stage.emit(GameEvents.TOGGLE_PRESS_START, false);
       this.context.app.stage.emit(GameEvents.START_GAME);
-      return;
     }
 
     if (this.isDeath) {
@@ -220,7 +230,7 @@ export default class Character extends GameObject {
     this.velocity.y = this.jumpVelocity.y;
   }
 
-  onRemove() {
+  override onRemove() {
     this.context.app.stage.off(GameEvents.JUMP, this.onJump, this);
     this.context.app.stage.off(
       GameEvents.SET_PLACE_OBJECTS,

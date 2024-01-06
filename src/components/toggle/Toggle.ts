@@ -11,17 +11,23 @@ export class Toggle extends Component {
     this.parent.on(GameEvents.TOGGLE_ACTIVE, this.onToggle, this);
   }
 
-  onRemove() {
+  override onRemove() {
     this.parent.off(GameEvents.TOGGLE_ACTIVE, this.onToggle, this);
   }
 
-  onToggle({ active, alpha, time = 0, callback }: IROToggleCfg) {
+  private onToggle({ active, alpha, time = 0, callback }: IROToggleCfg) {
     if (time) {
       if (alpha === undefined) {
+        if(active) {
+          this.parent.visible = active;
+        }
+
         new Tween(this.parent)
           .to({ alpha: Number(active) }, time)
           .onComplete(() => {
-            this.parent.visible = active;
+            if(!active) {
+              this.parent.visible = active;
+            }
 
             callback instanceof Function && callback();
           })

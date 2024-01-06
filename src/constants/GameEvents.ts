@@ -17,6 +17,9 @@ const Constants = {
   RESET_LEVEL: "RESET_LEVEL",
   DEATH: "DEATH",
   START_GAME: "START_GAME",
+  TOGGLE_PRESS_START: "TOGGLE_PRESS_START",
+  SET_COINS: "SET_COINS",
+  SET_LIVES: "SET_LIVES",
 };
 
 export type GameEventsCfg = {[key in keyof typeof Constants]: string };

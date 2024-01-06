@@ -1,24 +1,31 @@
 import { Container } from "pixi.js";
 import * as TWEEDLE from "tweedle.js";
+
 import { jsons } from "../configs/loader";
+
 import GameEvents from "../constants/GameEvents";
 import { Resolution } from "./constants";
+
 import { Camera } from "../camera/Camera";
+
 import GameScene from "../scenes/GameScene";
 import HudScene from "../scenes/HudScene";
 import LoadingScene from "../scenes/LoadingScene";
+
 import GameObjectStorage from "../managers/gameObjectsManager/GameObjectStorage";
 import GameObjectManager from "../managers/gameObjectsManager/GameObjectManager";
 import RenderStorage from "../managers/renderManager/RenderStorage";
+
 import { ICustomApplicationCfg, IROContextCfg } from "../types";
 
 export default class Game extends Container {
-  loadScene: LoadingScene;
-  gameScene: GameScene;
-  hudScene: HudScene;
-  context: IROContextCfg;
-  gameObjectStorage: GameObjectStorage;
-  renderStorage: RenderStorage;
+  private readonly loadScene: LoadingScene;
+  private readonly gameScene: GameScene;
+  private readonly hudScene: HudScene;
+  private readonly context: IROContextCfg;
+
+  private readonly gameObjectStorage: GameObjectStorage;
+  private readonly renderStorage: RenderStorage;
 
   constructor(app: ICustomApplicationCfg) {
     super();

@@ -1,14 +1,19 @@
 import { Container } from "pixi.js";
+
 import Point from "../../configs/Point";
+
 import GameEvents from "../../constants/GameEvents";
+
 import GameObjectManager from "../../managers/gameObjectsManager/GameObjectManager";
 import RenderManager from "../../managers/renderManager/RenderManager";
+
 import { IROContextCfg } from "../../types";
 
 export default class BaseScene extends Container {
-  context: IROContextCfg;
   gameObjectManager: GameObjectManager;
   renderManager: RenderManager;
+
+  protected readonly context: IROContextCfg;
 
   constructor(context: IROContextCfg) {
     super();
@@ -19,7 +24,13 @@ export default class BaseScene extends Container {
     this.onResize();
   }
 
-  onResize() {
+  create() {
+    this.onCreate();
+  }
+
+  onCreate() {}
+
+  private onResize() {
     this.context.app.deltaScale = Math.max(
       innerWidth / this.context.app.width,
       innerHeight / this.context.app.height
@@ -29,10 +40,4 @@ export default class BaseScene extends Container {
       this.context.app.deltaScale
     );
   }
-
-  create() {
-    this.onCreate();
-  }
-
-  onCreate() {}
 }

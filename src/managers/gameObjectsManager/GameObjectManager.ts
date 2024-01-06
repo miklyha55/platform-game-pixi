@@ -4,8 +4,8 @@ import GameObject from "./GameObject";
 import { IROContextCfg } from "../../types";
 
 export default class GameObjectManager {
-  gameObjects: GameObject[];
-  context: IROContextCfg;
+  private gameObjects: GameObject[];
+  private readonly context: IROContextCfg;
 
   constructor(context: IROContextCfg) {
     this.gameObjects = [];

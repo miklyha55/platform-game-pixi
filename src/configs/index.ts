@@ -10,7 +10,7 @@ import pig2 from "../assets/images/game/pig/pig_2.png";
 import block from "../assets/images/game/block.png";
 
 import coin from "../assets/images/ui/coin.png";
-import life from "../assets/images/ui/life.png";
+import live from "../assets/images/ui/live.png";
 
 export const textureAssets = {
   bg1,
@@ -23,7 +23,7 @@ export const textureAssets = {
   },
   block,
   coin,
-  life,
+  live,
 };
 
 export const fontAssets = {};

@@ -1,7 +1,10 @@
 import PlaceObject from "./core/PlaceObject";
+
 import { textures } from "../../configs/loader";
-import PlaceObjectType from "./constants";
 import Point from "../../configs/Point";
+
+import PlaceObjectType from "./constants";
+
 import { IROContextCfg } from "../../types";
 
 export default class Coin extends PlaceObject {

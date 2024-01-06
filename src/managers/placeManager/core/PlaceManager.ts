@@ -1,16 +1,19 @@
 import GameEvents from "../../../constants/GameEvents";
+
 import GameObjectManager from "../../gameObjectsManager/GameObjectManager";
+
 import PlaceObject from "./PlaceObject";
 import Block from "../Block";
-import Coin from "../Coint";
+import Coin from "../Coin";
+
 import { IROContextCfg } from "../../../types";
 
 export default class PlaceManager {
-  placeObjects: PlaceObject[];
-  spawnDistance: number;
-  spawnPositionsY: number[];
-  context: IROContextCfg;
-  gameObjectManager: GameObjectManager;
+  private placeObjects: PlaceObject[];
+  private readonly spawnDistance: number;
+  private readonly spawnPositionsY: number[];
+  private readonly context: IROContextCfg;
+  private readonly gameObjectManager: GameObjectManager;
 
   constructor(context: IROContextCfg, gameObjectManager: GameObjectManager) {
     this.placeObjects = [];
@@ -30,14 +33,6 @@ export default class PlaceManager {
     this.context.app.stage.emit(
       GameEvents.SET_PLACE_OBJECTS,
       this.placeObjects
-    );
-  }
-
-  onDeath() {
-    this.context.app.stage.off(GameEvents.DEATH, this.onDeath, this);
-    this.context.app.stage.off(
-      GameEvents.SPAWN_PLACE_OBJECT,
-      this.onSpawnPlaceObject
     );
   }
 
@@ -76,5 +71,13 @@ export default class PlaceManager {
       this.placeObjects.shift();
       placeObject.remove();
     };
+  }
+
+  private onDeath() {
+    this.context.app.stage.off(GameEvents.DEATH, this.onDeath, this);
+    this.context.app.stage.off(
+      GameEvents.SPAWN_PLACE_OBJECT,
+      this.onSpawnPlaceObject
+    );
   }
 }

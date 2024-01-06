@@ -1,27 +1,31 @@
 import { SCALE_MODES, Texture, TilingSprite } from "pixi.js";
-import GameObject from "../managers/gameObjectsManager/GameObject";
-import { IROContextCfg } from "../types";
-import { textures } from "../configs/loader";
-import Point from "../configs/Point";
-import GameEvents from "../constants/GameEvents";
-import RenderGameTypes from "../constants/RenderGameTypes";
+
+import { textures } from "../../configs/loader";
+import Point from "../../configs/Point";
+
+import GameEvents from "../../constants/GameEvents";
+
+import GameObject from "../../managers/gameObjectsManager/GameObject";
+import RenderGameTypes from "../../managers/renderManager/constants/RenderGameTypes";
+
+import { IROContextCfg } from "../../types";
 
 export default class Bg extends GameObject {
-  layers: TilingSprite[];
+  private layers: TilingSprite[];
 
-  counter: number;
-  speed: number;
-  deltaParalaxSpeed: number;
-  direction: number;
+  private counter: number;
+  private readonly speed: number;
+  private readonly deltaParalaxSpeed: number;
+  private readonly direction: number;
 
-  isMove: boolean;
+  private isMove: boolean;
 
   constructor(context: IROContextCfg) {
     super(context);
 
     this.layers = [];
-
     this.counter = 0;
+
     this.speed = context.jsons.game.speed;
     this.deltaParalaxSpeed = context.jsons.game.bg.deltaParalaxSpeed;
     this.direction = context.jsons.game.bg.direction;
@@ -31,7 +35,7 @@ export default class Bg extends GameObject {
     this.isMove = true;
   }
 
-  createLayer(texture: Texture, width: number, height: number) {
+  private createLayer(texture: Texture, width: number, height: number) {
     const layer = this.addChild(new TilingSprite(texture, width, height));
 
     layer.anchor = new Point(0.5, 0.5);
@@ -42,12 +46,9 @@ export default class Bg extends GameObject {
     return layer;
   }
 
-  onCreate() {
-    const width = 500;
-    const height = 288;
-
+  override onCreate() {
     this.context.jsons.game.bg.layers?.forEach((layer) => {
-      this.createLayer(textures[layer], width, height);
+      this.createLayer(textures[layer], 500, 288);
     });
 
     this.scale = new Point(6, 6);
@@ -59,11 +60,11 @@ export default class Bg extends GameObject {
     this.context.app.stage.on(GameEvents.DEATH, this.onDeath, this);
   }
 
-  onDeath() {
+  private onDeath() {
     this.context.app.stage.off(GameEvents.TICKER, this.onTicker, this);
   }
 
-  onTicker(dt: number) {
+  private onTicker(dt: number) {
     if (!this.isMove) {
       return;
     }
@@ -77,7 +78,7 @@ export default class Bg extends GameObject {
     });
   }
 
-  onRemove() {
+  override onRemove() {
     this.context.app.stage.off(GameEvents.TICKER, this.onTicker, this);
     this.context.app.stage.off(GameEvents.DEATH, this.onDeath, this);
   }

@@ -7,9 +7,7 @@ export class InputAreaCommand extends InputCatcher {
     super(parent);
   }
 
-  onPointerDown() {
+  override onPointerDown() {
     this.context.app.stage.emit(GameEvents.JUMP);
   }
-  onPointerUp() {}
-  onPointerMove() {}
 }

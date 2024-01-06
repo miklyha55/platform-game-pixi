@@ -4,15 +4,16 @@ import GameEvents from "../constants/GameEvents";
 import { IROContextCfg } from "../types";
 
 export class Camera {
-  container: Container;
-  target: Container;
-  context: IROContextCfg;
+  private readonly container: Container;
+  private readonly context: IROContextCfg;
 
-  isUpdateOnlyResize: boolean;
+  private target: Container;
+  private isUpdateOnlyResize: boolean;
 
   constructor(context: IROContextCfg, container: Container) {
-    this.context = context;
     this.container = container;
+    this.context = context;
+    
     this.isUpdateOnlyResize = true;
 
     context.app.stage.on(GameEvents.TICKER, this.onTicker, this);
@@ -22,7 +23,7 @@ export class Camera {
     context.app.stage.on(GameEvents.ZOOM_CAMERA, this.onZoomCamera, this);
   }
 
-  updateTransform() {
+  private updateTransform() {
     if (this.target) {
       const { innerWidth, innerHeight } = window;
 
@@ -36,15 +37,20 @@ export class Camera {
     }
   }
 
-  onTicker() {
+  private onTicker() {
     !this.isUpdateOnlyResize && this.updateTransform();
   }
 
-  onResize() {
+  private onResize() {
     this.isUpdateOnlyResize && this.updateTransform();
   }
 
-  onFollowCamera({ target, time = 0, isUpdateOnlyResize = false, callback }) {
+  private onFollowCamera({
+    target,
+    time = 0,
+    isUpdateOnlyResize = false,
+    callback,
+  }) {
     const x =
       innerWidth / 2 -
       target.x * this.container.scale.x * this.context.app.deltaScale;
@@ -65,7 +71,7 @@ export class Camera {
       .start();
   }
 
-  onZoomCamera({ zoom, time = 300, callback }) {
+  private onZoomCamera({ zoom, time = 300, callback }) {
     new Tween(this.container.scale)
       .to(
         {

@@ -1,23 +1,31 @@
 import { SCALE_MODES } from "pixi.js";
 import { Tween } from "tweedle.js";
-import { textures } from "../../configs/loader";
-import Point from "../../configs/Point";
-import { Utils } from "../../configs/utils";
+
+import { textures } from "../../../configs/loader";
+import Point from "../../../configs/Point";
+import { Utils } from "../../../configs/utils";
+
 import CharacterAnimationType from "./constants";
-import GameEvents from "../../constants/GameEvents";
-import PlaceObjectType from "../../managers/placeManager/constants";
+import GameEvents from "../../../constants/GameEvents";
+
+import PlaceObjectType from "../../../managers/placeManager/constants";
+
 import Character from "./Character";
-import { IROContextCfg, IVev2 } from "../../types";
+
+import { IROContextCfg, IVev2 } from "../../../types";
 
 export default class Ai extends Character {
-  character: Character;
-  direction: number;
-  deltaCloser: number;
+  private readonly character: Character;
+
+  private direction: number;
+  private deltaCloser: number;
 
   constructor(context: IROContextCfg, character: Character) {
     super(context);
 
     this.character = character;
+
+    this.terminalVelocity = { x: 0, y: 55 };
 
     this.direction = 1;
     this.deltaCloser = 0.2;
@@ -27,7 +35,7 @@ export default class Ai extends Character {
     new Tween(this).to({ x: -200 }, 300).start();
   }
 
-  fillAnimations() {
+  override fillAnimations() {
     if (!this.context.jsons.game.ai.animations) {
       return;
     }
@@ -47,10 +55,7 @@ export default class Ai extends Character {
     });
   }
 
-  checkCollision() {
-    const radius: number = 100;
-    const radiusCharacter: number = 70;
-
+  override checkCollision() {
     this.placeObjects.forEach((placeObject) => {
       const vec1: IVev2 = new Point(this.position.x, this.position.y);
       const vec2: IVev2 = new Point(
@@ -62,13 +67,13 @@ export default class Ai extends Character {
         this.character.position.y
       );
 
-      if (Utils.mag(Utils.sub(vec1, vec3)) < radiusCharacter) {
+      if (Utils.mag(Utils.sub(vec1, vec3)) < 70) {
         this.context.app.stage.emit(GameEvents.DEATH);
         return;
       }
 
       if (
-        Utils.mag(Utils.sub(vec1, vec2)) < radius &&
+        Utils.mag(Utils.sub(vec1, vec2)) < 100 &&
         !this.isJump &&
         placeObject.type !== PlaceObjectType.Collectable
       ) {
@@ -83,25 +88,24 @@ export default class Ai extends Character {
     });
   }
 
-  onJump() {
+  override onJump() {
     if (!this.isFirstTap) {
       this.isFirstTap = true;
-      return;
     }
 
     this.direction = -1;
-    this.deltaCloser = 0.45;
+    this.deltaCloser = 0.65;
 
     new Tween(null)
       .to({}, 600)
       .onComplete(() => {
         this.direction = 1;
-        this.deltaCloser = 0.2;
+        this.deltaCloser = 0.35;
       })
       .start();
   }
 
-  async onTicker(dt: number) {
+  override async onTicker(dt: number) {
     this.checkCollision();
 
     if (this.isFirstTap) {
@@ -125,12 +129,12 @@ export default class Ai extends Character {
     }
   }
 
-  onDeath() {
+  override onDeath() {
     this.isDeath = true;
 
     this.sprite.scale.x = -1;
     new Tween(this)
-      .to({ x: -700, y: 50 }, 300)
+      .to({ x: -700, y: this.terminalVelocity.y }, 300)
       .onComplete(() => {})
       .start();
 

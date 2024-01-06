@@ -1,15 +1,14 @@
 import { Container, Sprite } from "pixi.js";
 import { Component } from "../core/Component";
+import Point from "../../configs/Point";
 import GameEvents from "../../constants/GameEvents";
 import { IROOrientationCfg, IROResizeCfg } from "./types";
-import { IROContextCfg } from "../../types";
-import Point from "../../configs/Point";
 
 export class Resize extends Component {
-  parent: Container;
-  landscape: IROOrientationCfg;
-  portrait: IROOrientationCfg;
-  context: IROContextCfg;
+  readonly parent: Container;
+
+  private readonly landscape: IROOrientationCfg;
+  private readonly portrait: IROOrientationCfg;
 
   constructor({ parent, landscape, portrait, context }: IROResizeCfg) {
     super(parent);
@@ -17,17 +16,18 @@ export class Resize extends Component {
     this.parent = parent;
     this.portrait = portrait;
     this.landscape = landscape;
-    this.context = context;
+  }
 
-    context.app.stage.on(GameEvents.RESIZE, this.onResize, this);
+  override onCreate() {
+    this.context.app.stage.on(GameEvents.RESIZE, this.onResize, this);
     this.onResize();
   }
 
-  onRemove() {
+  override onRemove() {
     this.context.app.stage.off(GameEvents.RESIZE, this.onResize, this);
   }
 
-  onResize() {
+  private onResize() {
     if (!this.landscape || !this.portrait) {
       console.warn("Please set Resize props to " + this.parent.name);
       return;
