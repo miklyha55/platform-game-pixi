@@ -14,6 +14,7 @@ import { IROContextCfg } from "../../types";
 
 export default class InputArea extends GameObject {
   private readonly graphics: Graphics;
+  private readonly keyDownHandler: (events: KeyboardEvent) => void;
 
   constructor(context: IROContextCfg) {
     super(context);
@@ -47,10 +48,25 @@ export default class InputArea extends GameObject {
     );
 
     this.renderLayer = RenderHudTypes.Ui;
+    this.keyDownHandler = this.onKeyDown.bind(this);
+
+    window.addEventListener('keydown', this.keyDownHandler);
   }
 
   private onToggleInputArea(active: boolean) {
     this.interactive = active;
+
+    if(active) {
+      window.addEventListener('keydown', this.keyDownHandler);
+    } else {
+      window.removeEventListener('keydown', this.keyDownHandler);
+    }
+  }
+
+  private onKeyDown(event: KeyboardEvent) {
+    if(event.code === "Space") {
+      this.context.app.stage.emit(GameEvents.JUMP);
+    }
   }
 
   override onRemove() {

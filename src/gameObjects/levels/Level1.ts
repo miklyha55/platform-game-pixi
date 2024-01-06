@@ -36,9 +36,6 @@ export default class Level1 {
     ) as Ai;
     this.placeManager = new PlaceManager(this.context, this.gameObjectManager);
     this.context.app.stage.on(GameEvents.START_GAME, this.onStartGame, this);
-
-    await Utils.delay(500);
-    this.context.app.stage.emit(GameEvents.TOGGLE_PRESS_START, true);
   }
 
   remove() {

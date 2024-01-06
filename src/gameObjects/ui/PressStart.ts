@@ -20,9 +20,10 @@ export default class PressStart extends GameObject {
     super(context);
 
     this.text = this.addChild(
-      new Text("PRESS START", {
+      new Text("PRESS CLICK \n OR SPACE KEY", {
         fontFamily: "Arial Black",
         fill: 0x2a2e30,
+        align: "right",
       })
     );
     this.text.anchor = new Point(0.5, 0.5);
@@ -34,28 +35,25 @@ export default class PressStart extends GameObject {
         context: context,
         parent: this,
         landscape: {
-          relativePosition: new Point(0.5, 0.4),
+          relativePosition: new Point(0.5, 0.3),
         },
         portrait: {
-          relativePosition: new Point(0.5, 0.4),
+          relativePosition: new Point(0.5, 0.3),
         },
       }),
     ];
 
-    this.emit(GameEvents.TOGGLE_ACTIVE, { active: false });
-    this.loopAnimation();
-  }
-
-  private loopAnimation() {
-    new Tween(this.scale).to({ x: 1.3, y: 1.3 }, 500).repeat().yoyo().start();
-  }
-
-  override onCreate() {
     this.context.app.stage.on(
       GameEvents.TOGGLE_PRESS_START,
       this.onTogglePressStart,
       this
     );
+
+    this.loopAnimation();
+  }
+
+  private loopAnimation() {
+    new Tween(this.scale).to({ x: 1.3, y: 1.3 }, 500).repeat().yoyo().start();
   }
 
   private onTogglePressStart(active: boolean) {

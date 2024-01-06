@@ -26,6 +26,9 @@ export default class GameScene extends BaseScene {
   }
 
   init() {
+    this.context.app.stage.emit(GameEvents.TOGGLE_INPUT_AREA, true);
+    this.context.app.stage.emit(GameEvents.TOGGLE_PRESS_START, true);
+    
     this.level = new Level1(this.context, this.gameObjectManager);
     this.level.create();
     sound.play("music", { loop: true, volume: 0.5 });

@@ -165,6 +165,7 @@ export default class Character extends GameObject {
   protected onDeath() {
     this.isDeath = true;
 
+    this.context.app.stage.emit(GameEvents.TOGGLE_INPUT_AREA, false);
     this.jumpVelocity = this.context.jsons.game.character.jumpVelocityDeath;
     this.isJump = false;
 
