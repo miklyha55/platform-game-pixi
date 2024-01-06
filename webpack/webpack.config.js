@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const {
   CleanWebpackPlugin: CleanWebpackPlugin,
 } = require("clean-webpack-plugin");
+const DEVELOPMENT = process.env.NODE_ENV === "development";
 
 entryPoint = path.resolve(__dirname, "./script.js");
 
@@ -34,14 +35,22 @@ module.exports = {
     compress: !0,
   },
 
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "./index.html"),
-      filename: "index.html",
-    }),
-    new CleanWebpackPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-  ],
+  plugins: DEVELOPMENT
+    ? [
+        new HtmlWebpackPlugin({
+          template: path.resolve(__dirname, "./index.html"),
+          filename: "index.html",
+        }),
+        new CleanWebpackPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+      ]
+    : [
+        new HtmlWebpackPlugin({
+          template: path.resolve(__dirname, "./index.pug"),
+          filename: "/index.html",
+          inject: false,
+        }),
+      ],
 
   module: {
     rules: [
