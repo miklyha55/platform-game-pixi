@@ -1,4 +1,5 @@
 import { SCALE_MODES } from "pixi.js";
+import { sound } from "@pixi/sound";
 import { Tween } from "tweedle.js";
 
 import { textures } from "../../../configs/loader";
@@ -78,6 +79,8 @@ export default class Ai extends Character {
         placeObject.type !== PlaceObjectType.Collectable
       ) {
         this.isJump = true;
+
+        sound.play("hry");
 
         this.animationComponent
           .switchAnimation(CharacterAnimationType.Jump)

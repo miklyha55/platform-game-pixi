@@ -15,11 +15,7 @@ export function load() {
       }
     }
 
-    for (const key in soundAssets) {
-      if (Object.hasOwnProperty.call(soundAssets, key)) {
-        sound.add(key, soundAssets[key]);
-      }
-    }
+    await loadSounds();
 
     for (const key in textureAssets) {
       if (Object.hasOwnProperty.call(textureAssets, key)) {
@@ -39,6 +35,30 @@ export function load() {
 
     return resolve();
   });
+
+  async function loadSounds() {
+    return new Promise<void>((resolve) => {
+      const soundPromises = [];
+
+      for (const key in soundAssets) {
+        if (Object.hasOwnProperty.call(soundAssets, key)) {
+          soundPromises.push(
+            new Promise<void>((resolve) => {
+              sound.add(key, {
+                url: soundAssets[key],
+                preload: true,
+                loaded: () => {
+                  resolve();
+                },
+              });
+            })
+          );
+        }
+      }
+
+      Promise.all(soundPromises).then(() => resolve());
+    });
+  }
 
   async function loadTree(writenObject: any, readenObject: any, key: string) {
     writenObject[key] = {};

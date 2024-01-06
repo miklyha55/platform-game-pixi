@@ -1,4 +1,5 @@
 import { AnimatedSprite, SCALE_MODES, Texture } from "pixi.js";
+import { sound } from "@pixi/sound";
 import { Tween } from "tweedle.js";
 
 import { textures } from "../../../configs/loader";
@@ -125,14 +126,17 @@ export default class Character extends GameObject {
         if (placeObject.type === PlaceObjectType.Collectable) {
           this.context.app.stage.emit(GameEvents.SET_COINS);
           placeObject.alpha = 0;
+          sound.play("dzin");
         } else {
           if (this.isInvulnerability) {
             return;
           }
+          sound.play("hit");
           this.livesCounter--;
           this.context.app.stage.emit(GameEvents.SET_LIVES);
 
           if (this.livesCounter === 0) {
+            sound.play("fail");
             this.context.app.stage.emit(GameEvents.DEATH);
             return;
           }
@@ -208,7 +212,7 @@ export default class Character extends GameObject {
   protected onJump() {
     if (!this.isFirstTap) {
       this.isFirstTap = true;
-
+      
       this.context.app.stage.emit(GameEvents.TOGGLE_PRESS_START, false);
       this.context.app.stage.emit(GameEvents.START_GAME);
     }
@@ -220,6 +224,7 @@ export default class Character extends GameObject {
     if (this.isJump) {
       return;
     }
+    sound.play("jump");
 
     this.isJump = true;
 
