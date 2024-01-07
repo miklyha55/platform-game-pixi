@@ -119,8 +119,8 @@ export default class Ai extends Character {
       return;
     }
 
-    this.velocity.y += this.gravity.y;
-    this.position.y += this.velocity.y * dt * this.speed.y;
+    this.velocity.y += this.gravity.y * dt;
+    this.position.y += this.velocity.y * this.speed.y * dt;
 
     if (this.position.y > this.terminalVelocity.y) {
       this.isJump = false;

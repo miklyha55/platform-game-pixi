@@ -187,7 +187,7 @@ export default class Character extends GameObject {
     }
     
     this.velocity.y += this.gravity.y * dt;
-    this.position.y += this.velocity.y * this.speed.y;
+    this.position.y += this.velocity.y * this.speed.y * dt;
 
     if (this.position.y > this.terminalVelocity.y) {
       this.isJump = false;
