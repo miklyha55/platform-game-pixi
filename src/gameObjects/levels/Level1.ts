@@ -1,23 +1,22 @@
-import { Utils } from "../../configs/utils";
-
 import GameEvents from "../../constants/GameEvents";
 
 import PlaceManager from "../../managers/placeManager/core/PlaceManager";
 import GameObjectManager from "../../managers/gameObjectsManager/GameObjectManager";
 
+import Bg from "../game/Bg";
 import Character from "../game/characters/Character";
 import Ai from "../game/characters/Ai";
-import Bg from "../game/Bg";
 
 import { IROContextCfg } from "../../types";
 
 export default class Level1 {
+  private context: IROContextCfg;
+  private gameObjectManager: GameObjectManager;
+
   private bg: Bg;
   private character: Character;
   private ai: Ai;
   private placeManager: PlaceManager;
-  private context: IROContextCfg;
-  private gameObjectManager: GameObjectManager;
 
   constructor(context: IROContextCfg, gameObjectManager: GameObjectManager) {
     this.context = context;

@@ -1,6 +1,8 @@
 import { Container } from "pixi.js";
 import { Tween } from "tweedle.js";
+
 import GameEvents from "../constants/GameEvents";
+
 import { IROContextCfg } from "../types";
 
 export class Camera {

@@ -8,24 +8,25 @@ import { Resolution } from "./constants";
 
 import { Camera } from "../camera/Camera";
 
+import LoadingScene from "../scenes/LoadingScene";
 import GameScene from "../scenes/GameScene";
 import HudScene from "../scenes/HudScene";
-import LoadingScene from "../scenes/LoadingScene";
 
-import GameObjectStorage from "../managers/gameObjectsManager/GameObjectStorage";
 import GameObjectManager from "../managers/gameObjectsManager/GameObjectManager";
+import GameObjectStorage from "../managers/gameObjectsManager/GameObjectStorage";
 import RenderStorage from "../managers/renderManager/RenderStorage";
 
 import { ICustomApplicationCfg, IROContextCfg } from "../types";
 
 export default class Game extends Container {
+  private readonly context: IROContextCfg;
   private readonly loadScene: LoadingScene;
+
+  private readonly renderStorage: RenderStorage;
+  private readonly gameObjectStorage: GameObjectStorage;
+
   private readonly gameScene: GameScene;
   private readonly hudScene: HudScene;
-  private readonly context: IROContextCfg;
-
-  private readonly gameObjectStorage: GameObjectStorage;
-  private readonly renderStorage: RenderStorage;
 
   constructor(app: ICustomApplicationCfg) {
     super();

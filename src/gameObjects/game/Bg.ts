@@ -12,8 +12,8 @@ import { IROContextCfg } from "../../types";
 
 export default class Bg extends GameObject {
   private layers: TilingSprite[];
-
   private counter: number;
+
   private readonly speed: number;
   private readonly deltaParalaxSpeed: number;
   private readonly direction: number;
@@ -30,9 +30,9 @@ export default class Bg extends GameObject {
     this.deltaParalaxSpeed = context.jsons.game.bg.deltaParalaxSpeed;
     this.direction = context.jsons.game.bg.direction;
 
-    this.renderLayer = RenderGameTypes.Bg;
-
     this.isMove = true;
+
+    this.renderLayer = RenderGameTypes.Bg;
   }
 
   private createLayer(texture: Texture, width: number, height: number) {

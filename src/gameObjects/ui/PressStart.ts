@@ -28,8 +28,8 @@ export default class PressStart extends GameObject {
       })
     );
     this.text.anchor = new Point(0.5, 0.5);
+    
     this.renderLayer = RenderHudTypes.Ui;
-
     this.components = [
       new Toggle(this),
       new Resize({

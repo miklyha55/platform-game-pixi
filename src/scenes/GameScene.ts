@@ -21,31 +21,34 @@ export default class GameScene extends BaseScene {
     super(context);
 
     this.renderManager = new RenderManager(this.context, this, RenderGameTypes);
+
     context.app.stage.on(GameEvents.RESET_LEVEL, this.onResetLevel, this);
     context.app.stage.on(GameEvents.DEATH, this.onDeath, this);
   }
 
-  init() {
+  createLevel() {
     this.context.app.stage.emit(GameEvents.TOGGLE_INPUT_AREA, true);
     this.context.app.stage.emit(GameEvents.TOGGLE_PRESS_START, true);
     
     this.level = new Level1(this.context, this.gameObjectManager);
     this.level.create();
-    sound.play("music", { loop: true, volume: 0.5 });
 
+    sound.play("music", { loop: true, volume: 0.5 });
     sound.play("may");
   }
 
   onCreate() {
-    this.init();
+    this.createLevel();
   }
 
   onResetLevel() {
     this.level.remove();
-    this.init();
+    this.createLevel();
   }
 
   onDeath() {
+    this.context.app.stage.emit(GameEvents.TOGGLE_INPUT_AREA, false);
+
     sound.stop("music");
   }
 }

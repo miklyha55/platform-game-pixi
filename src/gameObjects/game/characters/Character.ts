@@ -19,11 +19,6 @@ import { Animation } from "../../../components/animation/Animation";
 import { IROContextCfg, IVev2 } from "../../../types";
 
 export default class Character extends GameObject {
-  protected sprite: AnimatedSprite;
-  protected animations: Texture[][];
-  protected placeObjects: PlaceObject[];
-  protected animationComponent: Animation;
-
   private livesCounter: number;
 
   protected terminalVelocity: IVev2;
@@ -37,18 +32,21 @@ export default class Character extends GameObject {
   protected isJump: boolean;
   protected isDeath: boolean;
 
+  protected placeObjects: PlaceObject[];
+  protected animations: Texture[][];
+  protected animationComponent: Animation;
+  protected sprite: AnimatedSprite;
+
   constructor(context: IROContextCfg) {
     super(context);
 
-    this.terminalVelocity = { x: 0, y: 50 };
+    this.livesCounter = this.context.jsons.game.character.livesCounter;
 
+    this.terminalVelocity = this.context.jsons.game.character.terminalVelocity;
     this.jumpVelocity = this.context.jsons.game.character.jumpVelocity;
     this.speed = this.context.jsons.game.character.speed;
-
     this.velocity = { x: 0, y: 0 };
     this.gravity = { x: 0, y: 9.5 };
-
-    this.livesCounter = this.context.jsons.game.character.livesCounter;
 
     this.isInvulnerability = false;
     this.isFirstTap = false;
@@ -68,6 +66,7 @@ export default class Character extends GameObject {
 
     this.sprite = this.addChild(this.animationComponent.sprite);
     this.sprite.anchor = new Point(0.5, 0.5);
+
     this.components = [this.animationComponent];
 
     this.renderLayer = RenderGameTypes.Character;
@@ -164,10 +163,9 @@ export default class Character extends GameObject {
 
   protected onDeath() {
     this.isDeath = true;
-
-    this.context.app.stage.emit(GameEvents.TOGGLE_INPUT_AREA, false);
-    this.jumpVelocity = this.context.jsons.game.character.jumpVelocityDeath;
     this.isJump = false;
+
+    this.jumpVelocity = this.context.jsons.game.character.jumpVelocityDeath;
 
     this.onJump();
 
@@ -185,7 +183,7 @@ export default class Character extends GameObject {
     if (!this.isJump) {
       return;
     }
-    
+
     this.velocity.y += this.gravity.y * dt;
     this.position.y += this.velocity.y * this.speed.y * dt;
 
@@ -213,7 +211,7 @@ export default class Character extends GameObject {
   protected onJump() {
     if (!this.isFirstTap) {
       this.isFirstTap = true;
-      
+
       this.context.app.stage.emit(GameEvents.TOGGLE_PRESS_START, false);
       this.context.app.stage.emit(GameEvents.START_GAME);
     }

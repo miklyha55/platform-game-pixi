@@ -26,10 +26,10 @@ export default class Ai extends Character {
 
     this.character = character;
 
-    this.terminalVelocity = { x: 0, y: 55 };
-
     this.direction = 1;
-    this.deltaCloser = 0.2;
+    this.deltaCloser = this.context.jsons.game.ai.deltaCloser;
+
+    this.terminalVelocity = this.context.jsons.game.ai.terminalVelocity;
 
     this.position = new Point(-700, -150);
 
@@ -97,13 +97,13 @@ export default class Ai extends Character {
     }
 
     this.direction = -1;
-    this.deltaCloser = 0.65;
+    this.deltaCloser = this.context.jsons.game.ai.deltaCloserBack;
 
     new Tween(null)
       .to({}, 600)
       .onComplete(() => {
         this.direction = 1;
-        this.deltaCloser = 0.35;
+        this.deltaCloser = this.context.jsons.game.ai.deltaCloser;
       })
       .start();
   }

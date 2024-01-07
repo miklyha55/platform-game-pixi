@@ -44,11 +44,15 @@ export interface IROJsonCfg {
     readonly character: {
       readonly livesCounter: number;
       readonly speed: IVev2;
+      readonly terminalVelocity: IVev2;
       readonly jumpVelocity: IVev2;
       readonly jumpVelocityDeath: IVev2;
       readonly animations: string[][];
     };
     readonly ai: {
+      readonly deltaCloser: number;
+      readonly deltaCloserBack: number;
+      readonly terminalVelocity: IVev2;
       readonly animations: string[][];
     };
   };

@@ -14,8 +14,9 @@ export class Resize extends Component {
     super(parent);
 
     this.parent = parent;
-    this.portrait = portrait;
+
     this.landscape = landscape;
+    this.portrait = portrait;
   }
 
   override onCreate() {

@@ -13,9 +13,10 @@ import { Resize } from "../../components/resize/Resize";
 import { IROContextCfg } from "../../types";
 
 export default class Coins extends GameObject {
+  private coins: number;
+
   private readonly sprite: Sprite;
   private readonly text: Text;
-  private coins: number;
 
   constructor(context: IROContextCfg) {
     super(context);
@@ -37,7 +38,6 @@ export default class Coins extends GameObject {
     this.text.position = new Point(70, 35);
 
     this.renderLayer = RenderHudTypes.Ui;
-
     this.components = [
       new Resize({
         context: context,

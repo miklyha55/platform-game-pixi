@@ -6,9 +6,10 @@ import { IROContextCfg } from "../../types";
 
 export default class GameObject extends Container {
   name: string;
+  gameObjectManager: GameObjectManager;
+
   renderLayer: string;
   components: Component[];
-  gameObjectManager: GameObjectManager;
   context: IROContextCfg;
 
   constructor(context: IROContextCfg) {

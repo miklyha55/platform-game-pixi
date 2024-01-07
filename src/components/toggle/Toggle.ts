@@ -1,7 +1,10 @@
 import { Container } from "pixi.js";
 import { Tween } from "tweedle.js";
+
 import { Component } from "../core/Component";
+
 import GameEvents from "../../constants/GameEvents";
+
 import { IROToggleCfg } from "./types";
 
 export class Toggle extends Component {
@@ -18,14 +21,14 @@ export class Toggle extends Component {
   private onToggle({ active, alpha, time = 0, callback }: IROToggleCfg) {
     if (time) {
       if (alpha === undefined) {
-        if(active) {
+        if (active) {
           this.parent.visible = active;
         }
 
         new Tween(this.parent)
           .to({ alpha: Number(active) }, time)
           .onComplete(() => {
-            if(!active) {
+            if (!active) {
               this.parent.visible = active;
             }
 
