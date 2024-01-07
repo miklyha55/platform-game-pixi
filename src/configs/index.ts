@@ -26,7 +26,11 @@ export const textureAssets = {
   live,
 };
 
-export const fontAssets = {};
+import montserratBold from "../assets/fonts/Montserrat-Bold.ttf";
+
+export const fontAssets = {
+  montserratBold,
+};
 
 import hit from "../assets/sounds/block.mp3";
 import may from "../assets/sounds/cat.mp3";

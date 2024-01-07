@@ -1,7 +1,7 @@
 import { SCALE_MODES, Sprite, Text } from "pixi.js";
 
 import Point from "../../configs/Point";
-import { textures } from "../../configs/loader";
+import { fonts, textures } from "../../configs/loader";
 
 import GameEvents from "../../constants/GameEvents";
 
@@ -29,7 +29,7 @@ export default class Coins extends GameObject {
 
     this.text = this.addChild(
       new Text(String(this.coins), {
-        fontFamily: "Arial Black",
+        fontFamily: fonts.montserratBold.family,
         fill: 0x2a2e30,
       })
     );

@@ -49,8 +49,8 @@ export default class Game extends Container {
     this.gameScene.gameObjectManager = new GameObjectManager(this.context);
     this.hudScene.gameObjectManager = new GameObjectManager(this.context);
 
-    app.ticker.add((dt: Number) => {
-      app.stage.emit(GameEvents.TICKER, dt);
+    app.ticker.add(() => {
+      app.stage.emit(GameEvents.TICKER, app.ticker.deltaTime);
       TWEEDLE.Group.shared.update(app.ticker.deltaMS);
     });
   }

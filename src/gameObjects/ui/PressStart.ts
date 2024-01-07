@@ -12,6 +12,7 @@ import { Toggle } from "../../components/toggle/Toggle";
 import { Resize } from "../../components/resize/Resize";
 
 import { IROContextCfg } from "../../types";
+import { fonts } from "../../configs/loader";
 
 export default class PressStart extends GameObject {
   private readonly text: Text;
@@ -21,7 +22,7 @@ export default class PressStart extends GameObject {
 
     this.text = this.addChild(
       new Text("PRESS CLICK \n OR SPACE KEY", {
-        fontFamily: "Arial Black",
+        fontFamily: fonts.montserratBold.family,
         fill: 0x2a2e30,
         align: "right",
       })
